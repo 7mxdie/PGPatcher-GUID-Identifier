@@ -3,193 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deployment Decoder — PGPatcher GUID Identifier</title>
+<title>Deployment Decoder — Name the GUID mods PGPatcher won't</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ---- Design tokens ----
-     Subject: Skyrim PBR modding utility. Vernacular: forge/smithing + arcane runes.
-     Palette drawn from Nordic iron + PBR "complex material" glints, not the AI-default cream/terracotta. */
   :root{
-    --void:#0d0f13;          /* deep iron-black background */
-    --slate:#161a21;         /* panel */
-    --slate-2:#1e242e;       /* raised panel */
-    --line:#2b323d;          /* hairline */
-    --line-hot:#3a4350;      /* brighter hairline on hover */
-    --ash:#8a94a3;           /* muted text */
-    --parchment:#e9e3d4;     /* primary text, warm bone */
-    --rune:#c8a24a;          /* gold rune accent (smithing) */
-    --rune-dim:#7d6a34;
-    --frost:#5fb3c4;         /* frost-salt cyan — the PBR "specular" glint */
-    --ember:#d1553f;         /* ember red — "won't fix / danger" */
-    --moss:#6f9a5a;          /* verdigris green — "fixable / go" */
-    --shadow:0 18px 50px -20px rgba(0,0,0,.8);
-    --mono:'Iosevka','SFMono-Regular',ui-monospace,'Cascadia Code',Menlo,Consolas,monospace;
-    --display:'Cinzel',Georgia,'Times New Roman',serif;
+    --void:#0c0e12;
+    --slate:#151922;
+    --slate-2:#1c222d;
+    --line:#2a323f;
+    --line-2:#39434f;
+    --ash:#8d97a6;
+    --ash-dim:#616b78;
+    --parchment:#eae4d6;
+    --rune:#cba24d;
+    --rune-dim:#8a7436;
+    --frost:#63b6c7;
+    --ember-solid:#d35741;
+    --moss-solid:#74a05c;
+    --shadow:0 24px 60px -24px rgba(0,0,0,.85);
+    --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+    --display:'Cinzel',Georgia,serif;
     --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
+  html,body{margin:0;padding:0}
   body{
     background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(200,162,74,.06), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(95,179,196,.05), transparent 55%),
+      radial-gradient(1100px 520px at 82% -8%, rgba(203,162,77,.07), transparent 58%),
+      radial-gradient(820px 460px at -8% 108%, rgba(99,182,199,.055), transparent 52%),
       var(--void);
+    background-attachment:fixed;
     color:var(--parchment);
     font-family:var(--body);
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
   }
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 100px}
 
-  .wrap{max-width:1080px;margin:0 auto;padding:48px 24px 96px}
-
-  /* ---- Hero ---- */
-  header.hero{
-    border:1px solid var(--line);
-    border-radius:14px;
-    background:linear-gradient(180deg,var(--slate-2),var(--slate));
-    padding:36px 34px;
+  .hero{
     position:relative;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:linear-gradient(178deg,var(--slate-2),var(--slate));
+    padding:44px 40px 40px;
     overflow:hidden;
     box-shadow:var(--shadow);
   }
-  header.hero::before{
+  .hero::before{
     content:"";position:absolute;inset:0;
-    background:repeating-linear-gradient(90deg,transparent 0 38px,rgba(200,162,74,.025) 38px 39px);
+    background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(203,162,77,.02) 46px 47px);
     pointer-events:none;
   }
+  .hero > *{position:relative}
   .kicker{
-    font-family:var(--mono);
-    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-    color:var(--rune);margin:0 0 14px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--rune);margin:0 0 16px;display:flex;align-items:center;gap:12px;
   }
+  .kicker::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--rune-dim),transparent);opacity:.5}
   h1{
-    font-family:var(--display);
-    font-weight:700;
-    font-size:clamp(30px,5vw,46px);
-    line-height:1.02;
-    margin:0 0 12px;
-    letter-spacing:.01em;
+    font-family:var(--display);font-weight:700;
+    font-size:clamp(32px,5.4vw,52px);line-height:1.03;margin:0 0 16px;letter-spacing:.005em;
   }
   h1 .glint{color:var(--frost)}
-  .sub{color:var(--ash);max-width:60ch;margin:0;font-size:15px}
-  .privacy{
-    margin-top:18px;display:inline-flex;gap:8px;align-items:center;
-    font-family:var(--mono);font-size:11.5px;color:var(--moss);
-    border:1px solid rgba(111,154,90,.3);border-radius:999px;padding:5px 12px;
-    background:rgba(111,154,90,.06);
-  }
+  .lede{color:var(--ash);max-width:64ch;margin:0;font-size:15.5px}
+  .lede code{font-family:var(--mono);font-size:13px;color:var(--parchment);background:rgba(255,255,255,.04);padding:1px 6px;border-radius:5px}
 
-  /* ---- Drop zone ---- */
-  .forge{
-    margin-top:26px;
-    border:1.5px dashed var(--line);
-    border-radius:12px;
-    background:var(--slate);
-    padding:40px 28px;
-    text-align:center;
-    transition:border-color .18s, background .18s, transform .18s;
-    cursor:pointer;
-  }
-  .forge.hot{border-color:var(--rune);background:rgba(200,162,74,.05)}
-  .forge .rune{
-    font-family:var(--display);font-size:34px;color:var(--rune-dim);
-    display:block;margin-bottom:10px;letter-spacing:.15em;
-  }
-  .forge strong{color:var(--parchment);font-weight:600}
-  .forge small{display:block;color:var(--ash);margin-top:8px;font-size:12.5px;font-family:var(--mono)}
-  input[type=file]{display:none}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 8px}
+  .step{border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.015);padding:16px 16px 15px}
+  .step .num{font-family:var(--display);font-size:13px;font-weight:700;color:var(--void);background:var(--rune);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+  .step h3{margin:0 0 5px;font-size:14px;font-weight:600;color:var(--parchment)}
+  .step p{margin:0;font-size:12.5px;color:var(--ash);line-height:1.5}
+  .step code{font-family:var(--mono);font-size:11px;color:var(--frost);word-break:break-all}
 
-  /* ---- Summary bar ---- */
-  .summary{
-    display:none;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
-    margin-top:26px;border:1px solid var(--line);border-radius:12px;overflow:hidden;
-    background:var(--line);
-  }
+  .findfile{margin-top:14px;border:1px solid var(--line);border-radius:11px;background:rgba(99,182,199,.04);padding:14px 18px;display:flex;gap:13px;align-items:flex-start}
+  .findfile .ic{color:var(--frost);font-family:var(--display);font-size:19px;line-height:1.2;flex:none}
+  .findfile p{margin:0;font-size:12.8px;color:var(--ash)}
+  .findfile b{color:var(--parchment);font-weight:600}
+  .findfile code{font-family:var(--mono);font-size:11.5px;color:var(--frost);background:rgba(99,182,199,.07);padding:1px 6px;border-radius:5px}
+
+  .forge{margin-top:22px;border:1.5px dashed var(--line-2);border-radius:13px;background:var(--slate);padding:34px 24px;text-align:center;cursor:pointer;transition:border-color .18s, background .18s;display:block}
+  .forge:hover{border-color:var(--rune-dim)}
+  .forge.hot{border-color:var(--rune);background:rgba(203,162,77,.06)}
+  .forge .rune{font-family:var(--display);font-size:30px;color:var(--rune-dim);display:block;margin-bottom:12px;letter-spacing:.1em}
+  .forge .big{font-size:16px;font-weight:600;color:var(--parchment);display:block}
+  .forge .small{display:block;color:var(--ash-dim);margin-top:8px;font-size:12px;font-family:var(--mono)}
+  input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+  .err{display:none;margin-top:16px;border:1px solid rgba(211,87,65,.4);background:rgba(211,87,65,.08);border-radius:10px;padding:13px 16px;color:var(--parchment);font-size:13.5px}
+  .err.show{display:block}
+  .err b{color:var(--ember-solid)}
+
+  .summary{display:none;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:22px;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--line)}
   .summary.show{display:grid}
-  .stat{background:var(--slate-2);padding:18px 20px}
-  .stat .n{font-family:var(--display);font-size:30px;font-weight:600;line-height:1}
-  .stat .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin-top:8px}
-  .stat.fix .n{color:var(--moss)}
-  .stat.keep .n{color:var(--ember)}
+  .stat{background:var(--slate-2);padding:19px 22px}
+  .stat .n{font-family:var(--display);font-size:32px;font-weight:600;line-height:1}
+  .stat .l{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash-dim);margin-top:9px}
   .stat.total .n{color:var(--frost)}
+  .stat.fix .n{color:var(--moss-solid)}
+  .stat.keep .n{color:var(--ember-solid)}
 
-  /* ---- Controls ---- */
-  .controls{display:none;gap:10px;margin:26px 0 8px;flex-wrap:wrap;align-items:center}
+  .controls{display:none;gap:10px;margin:20px 0 4px;flex-wrap:wrap;align-items:center}
   .controls.show{display:flex}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
-  .seg button{
-    background:var(--slate);color:var(--ash);border:0;padding:8px 15px;
-    font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.04em;
-    border-right:1px solid var(--line);
-  }
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--slate)}
+  .seg button{background:transparent;color:var(--ash);border:0;padding:9px 15px;font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.03em;border-right:1px solid var(--line);transition:background .12s,color .12s}
   .seg button:last-child{border-right:0}
+  .seg button:hover{color:var(--parchment)}
   .seg button.on{background:var(--rune);color:var(--void);font-weight:600}
-  .search{
-    flex:1;min-width:180px;background:var(--slate);border:1px solid var(--line);
-    border-radius:9px;padding:9px 13px;color:var(--parchment);font-family:var(--mono);font-size:12.5px;
-  }
-  .search::placeholder{color:var(--ash)}
+  .search{flex:1;min-width:190px;background:var(--slate);border:1px solid var(--line);border-radius:9px;padding:10px 14px;color:var(--parchment);font-family:var(--mono);font-size:12.5px}
+  .search::placeholder{color:var(--ash-dim)}
   .search:focus{outline:none;border-color:var(--frost)}
 
-  /* ---- Results ---- */
-  .results{margin-top:14px;display:flex;flex-direction:column;gap:10px}
-  .mod{
-    border:1px solid var(--line);border-radius:11px;background:var(--slate-2);
-    overflow:hidden;transition:border-color .15s;
-  }
-  .mod:hover{border-color:var(--line-hot,#3a4350)}
-  .mod-head{
-    display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
-    padding:15px 18px;cursor:pointer;
-  }
-  .verdict-dot{width:9px;height:9px;border-radius:50%;flex:none}
-  .fixable .verdict-dot{background:var(--moss);box-shadow:0 0 10px rgba(111,154,90,.6)}
-  .keepguid .verdict-dot{background:var(--ember);box-shadow:0 0 10px rgba(209,85,63,.55)}
-  .unknown .verdict-dot{background:var(--ash)}
-  .mod-name{font-family:var(--display);font-size:17px;font-weight:600;line-height:1.2}
-  .mod-name .guid{
-    display:block;font-family:var(--mono);font-size:10.5px;color:var(--ash);
-    font-weight:400;letter-spacing:.02em;margin-top:3px;
-  }
-  .mod-meta{display:flex;gap:14px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--ash)}
-  .pill{
-    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-    padding:4px 9px;border-radius:6px;white-space:nowrap;
-  }
-  .fixable .pill{background:rgba(111,154,90,.13);color:var(--moss);border:1px solid rgba(111,154,90,.3)}
-  .keepguid .pill{background:rgba(209,85,63,.12);color:var(--ember);border:1px solid rgba(209,85,63,.3)}
-  .unknown .pill{background:rgba(138,148,163,.12);color:var(--ash);border:1px solid var(--line)}
-  .chev{color:var(--ash);transition:transform .18s;font-family:var(--mono)}
+  .filter-note{display:none;font-family:var(--mono);font-size:11.5px;color:var(--ash);margin:14px 2px 0;line-height:1.6}
+  .filter-note.show{display:block}
+  .filter-note b{color:var(--parchment)}
+  .results{margin-top:10px;display:flex;flex-direction:column;gap:9px}
+  .mod{border:1px solid var(--line);border-radius:11px;background:var(--slate-2);overflow:hidden;transition:border-color .14s}
+  .mod:hover{border-color:var(--line-2)}
+  .mod-head{display:grid;grid-template-columns:auto 1fr auto;gap:15px;align-items:center;padding:15px 18px;cursor:pointer}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .fixable .dot{background:var(--moss-solid);box-shadow:0 0 9px rgba(116,160,92,.55)}
+  .keepguid .dot{background:var(--ember-solid);box-shadow:0 0 9px rgba(211,87,65,.5)}
+  .unknown .dot{background:var(--ash-dim)}
+  .mod-name{font-family:var(--display);font-size:16.5px;font-weight:600;line-height:1.22}
+  .unknown .mod-name{color:var(--ash)}
+  .mod-name .guid{display:block;font-family:var(--mono);font-size:10.5px;color:var(--ash-dim);font-weight:400;margin-top:3px;letter-spacing:.01em}
+  .mod-meta{display:flex;gap:13px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--ash-dim)}
+  .pill{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;padding:5px 9px;border-radius:6px;white-space:nowrap}
+  .fixable .pill{background:rgba(116,160,92,.14);color:var(--moss-solid);border:1px solid rgba(116,160,92,.32)}
+  .keepguid .pill{background:rgba(211,87,65,.12);color:var(--ember-solid);border:1px solid rgba(211,87,65,.3)}
+  .unknown .pill{background:rgba(141,151,166,.1);color:var(--ash);border:1px solid var(--line)}
+  .ghost{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-dim);border:1px dashed var(--line-2);border-radius:5px;padding:4px 7px}
+  .chev{color:var(--ash-dim);transition:transform .18s;font-size:10px}
   .mod.open .chev{transform:rotate(90deg)}
-
-  .mod-body{display:none;border-top:1px solid var(--line);padding:16px 18px;background:var(--slate)}
+  .mod-body{display:none;border-top:1px solid var(--line);padding:17px 18px;background:var(--slate)}
   .mod.open .mod-body{display:block}
   .why{color:var(--parchment);font-size:13.5px;margin:0 0 14px}
   .why b{color:var(--rune)}
-  .link{
-    display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;
-    color:var(--frost);text-decoration:none;border:1px solid rgba(95,179,196,.3);
-    border-radius:8px;padding:7px 12px;margin-bottom:14px;transition:background .15s;
-  }
-  .link:hover{background:rgba(95,179,196,.08)}
-  .paths-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin:0 0 8px}
+  .link{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--frost);text-decoration:none;border:1px solid rgba(99,182,199,.32);border-radius:8px;padding:8px 13px;margin-bottom:14px;transition:background .14s}
+  .link:hover{background:rgba(99,182,199,.09)}
+  .fp{font-family:var(--mono);font-size:11px;color:var(--frost);margin:0 0 12px}
+  .fp span{color:var(--ash-dim)}
+  .paths-h{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ash-dim);margin:0 0 8px}
   .paths{font-family:var(--mono);font-size:11.5px;color:var(--ash);display:grid;gap:3px}
-  .paths .row{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:baseline}
+  .paths .row{display:grid;grid-template-columns:42px 1fr;gap:10px;align-items:baseline}
   .paths .cnt{color:var(--rune);text-align:right}
-  .fp{font-family:var(--mono);font-size:11px;color:var(--frost);margin-top:10px}
-  .fp span{color:var(--ash)}
 
-  footer{margin-top:40px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--ash);line-height:1.8}
-  footer .steps{color:var(--parchment)}
-  .err{display:none;margin-top:18px;border:1px solid rgba(209,85,63,.4);background:rgba(209,85,63,.07);
-    border-radius:10px;padding:14px 16px;color:var(--parchment);font-size:13.5px}
-  .err.show{display:block}
-  .err b{color:var(--ember)}
+  footer{margin-top:38px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--ash-dim);line-height:1.9}
+  footer .hot{color:var(--parchment)}
 
-  @media(max-width:560px){
+  @media(max-width:720px){.steps{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){
+    .hero{padding:32px 22px}
     .mod-head{grid-template-columns:auto 1fr;grid-template-areas:"dot name" "meta meta"}
-    .verdict-dot{grid-area:dot}.mod-name{grid-area:name}.mod-meta{grid-area:meta;justify-content:flex-start;margin-top:6px}
+    .dot{grid-area:dot}.mod-name{grid-area:name}.mod-meta{grid-area:meta;justify-content:flex-start;margin-top:7px}
     .chev{display:none}
   }
 </style>
@@ -197,63 +166,66 @@
 <body>
 <div class="wrap">
 
-  <header class="hero">
+  <section class="hero">
     <p class="kicker">Vortex Deployment Decoder</p>
     <h1>Name the <span class="glint">nameless</span> mods<br>PGPatcher won't.</h1>
-    <p class="sub">Drop in your <code>vortex.deployment.json</code> and this reads every GUID-named mod, works out what it actually is from its files, and tells you whether reinstalling will fix the name — or whether it's a lost cause worth leaving alone.</p>
-    <div class="privacy">◈ Runs entirely in your browser. The file never leaves your machine.</div>
+    <p class="lede">PGPatcher shows some mods as garbled codes like <code>99_33_27_993327ba…</code> instead of their real names. This reads your <code>vortex.deployment.json</code>, works out what each one actually is, and tells you whether reinstalling will fix the name — or whether it's a lost cause worth leaving alone.</p>
+
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Find your file</h3><p>Locate <code>vortex.deployment.json</code> — see the note just below.</p></div>
+      <div class="step"><div class="num">2</div><h3>Drop it in</h3><p>Drag the file onto the panel below. It's read on your device — nothing is uploaded.</p></div>
+      <div class="step"><div class="num">3</div><h3>Read the verdicts</h3><p>Green = reinstall to fix the name. Red = leave it, the code is permanent and harmless.</p></div>
+    </div>
+
+    <div class="findfile">
+      <span class="ic">◈</span>
+      <p><b>Where is the file?</b> It lives in your Skyrim <b>Data</b> folder: <code>…\Skyrim Special Edition\Data\vortex.deployment.json</code>. Quickest route: in Vortex, right-click the Skyrim game entry → <b>Open Game Folder</b>, then open the <b>Data</b> folder and grab <code>vortex.deployment.json</code>.</p>
+    </div>
 
     <label class="forge" id="forge" for="file">
       <span class="rune">ᛥ</span>
-      <strong>Drop vortex.deployment.json here</strong>
-      <small>or tap to browse · usually in …\Skyrim Special Edition\Data\</small>
+      <span class="big">Drop vortex.deployment.json here</span>
+      <span class="small">or click to browse</span>
       <input type="file" id="file" accept=".json,application/json">
     </label>
 
     <div class="err" id="err"></div>
-  </header>
+  </section>
 
   <div class="summary" id="summary">
-    <div class="stat total"><div class="n" id="s-total">0</div><div class="l">GUID mods</div></div>
-    <div class="stat fix"><div class="n" id="s-fix">0</div><div class="l">Reinstall to fix</div></div>
-    <div class="stat keep"><div class="n" id="s-keep">0</div><div class="l">Leave as GUID</div></div>
+    <div class="stat total"><div class="n" id="s-total">0</div><div class="l">Shown in PGPatcher</div></div>
+    <div class="stat fix"><div class="n" id="s-fix">0</div><div class="l">Worth reinstalling</div></div>
+    <div class="stat keep"><div class="n" id="s-keep">0</div><div class="l">Not in PGPatcher</div></div>
     <div class="stat"><div class="n" id="s-files">0</div><div class="l">Files decoded</div></div>
   </div>
 
   <div class="controls" id="controls">
     <div class="seg" id="filterSeg">
-      <button data-f="all" class="on">All</button>
-      <button data-f="fixable">Fixable</button>
-      <button data-f="keepguid">Leave it</button>
-      <button data-f="unknown">Unknown</button>
+      <button data-f="inpg" class="on">In PGPatcher</button>
+      <button data-f="other">Other GUIDs</button>
+      <button data-f="all">All</button>
     </div>
-    <input class="search" id="search" placeholder="filter by name or path…">
+    <input class="search" id="search" placeholder="paste a code from PGPatcher (e.g. 99_33_27) to find it…">
   </div>
 
+  <p class="filter-note" id="filterNote"></p>
   <div class="results" id="results"></div>
 
   <footer>
-    <div class="steps">Fix workflow: remove in Vortex → manual-download the zip from Nexus → reinstall → deploy → re-run PGPatcher</div>
-    <div>Verdict is inferred from file fingerprints, not a guarantee. “Leave it” = Community Shaders parts, collection-internal ESPs, and your own mods that will always show a GUID.</div>
+    <div class="hot">Fix workflow: remove in Vortex → manual-download the zip from Nexus → reinstall → deploy → re-run PGPatcher</div>
+    <div>Verdicts are inferred from each mod's files, not guaranteed. Tuned for the Gate to Sovngarde collection — other load orders may show more “Needs a look”.</div>
   </footer>
 
 </div>
 
 <script>
-/* ============================================================
-   Fingerprint database — built from real GTS deployment files.
-   Each rule: test the mod's file paths; first match wins.
-   verdict: 'fixable' (standalone Nexus mod, reinstall works)
-            'keepguid' (bundled / internal — name won't resolve)
-   ============================================================ */
 const DB = [
-  // ---- self-naming PBRNifPatcher jsons (strongest signal) ----
   {name:"Faultier's PBR Road Signs", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Faultier+PBR+Road+Signs',
    test:p=>hasJson(p,"Faultier's PBR Road Signs.json")},
   {name:"Carts Remodeled - PBR", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/mods/148782',
-   note:'On the Skyrim 3D Series hub. Needs its base + additional required files.',
+   note:'On the Skyrim 3D Series hub. Watch for its "additional files required".',
    test:p=>hasJson(p,"Carts Remodeled - PBR.json")},
   {name:"PBR Riften", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=PBR+Riften',
@@ -262,276 +234,193 @@ const DB = [
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Tomato+Whiterun+PBR',
    note:'Large Whiterun overhaul — fine to win architecture conflicts.',
    test:p=>hasJson(p,"Tomato's Whiterun Remake PBR.json")||hasJson(p,"Tomato's Talos Statue PBR.json")},
-
-  // ---- PBR Flora Overhaul (huge, many jsons + distinctive folders) ----
   {name:"PBR Flora Overhaul", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/mods/148782',
-   note:'Mod 148782. Bundles many plant authors (Kreis, Mari, Happy Little Trees) with permission. Has a FOMOD — pick the Seasons option if you run Seasons of Skyrim.',
+   note:'Bundles many plant authors with permission. FOMOD installer — pick the Seasons option if you run Seasons of Skyrim.',
    test:p=>subPBR(p,'plants')&&(subPBR(p,'kreis plants')||hasJson(p,'BetterPBRReachTrees.json')||anyEsp(p,'PBR Flora Overhaul'))},
-
-  // ---- Medieval Silverworks / S3D Misc ----
   {name:"Medieval Silverworks PBR (Skyrim 3D Series)", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/mods/148782',
-   note:'Skyrim 3D Series hub — the S3DMisc / silverworks file (bundles Rudy misc candle PBR).',
+   note:'Skyrim 3D Series hub — the S3DMisc / silverworks file.',
    test:p=>subPBR(p,'S3DMisc')},
-
-  // ---- Skyrim 3D Rocks ----
   {name:"Skyrim 3D Rocks PBR (Skyrim 3D Series)", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/mods/148782',
    test:p=>p.some(x=>/s3drocks/i.test(x))},
-
-  // ---- Moon Monk's Robes ----
   {name:"Moon Monk's Robes PBR", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Moon+Monk+Robes',
    test:p=>p.some(x=>/Kad_KhajiitRobes/i.test(x))},
-
-  // ---- Solitude PBR (windows / architecture) ----
   {name:"Solitude PBR (windows/architecture)", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Solitude+PBR',
    test:p=>subPBR(p,'architecture')&&p.some(x=>/swindow|scastlecol|sintcoloumn|sintfloor/i.test(x))},
-
-  // ---- Bards College Rework ----
   {name:"Bards College Rework", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Bards+College+Rework',
    test:p=>anyEsp(p,'Bards College Rework')||p.some(x=>/Bards College Rework\.bsa/i.test(x))},
-
-  // ---- ELFX Shadows patches ----
   {name:"ELFX Shadows patches", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=ELFX+Shadows',
-   note:'Some ELFX patches were flagged "missing masters" in PGPatcher — check dependencies.',
+   note:'Some ELFX patches can flag "missing masters" in PGPatcher — check dependencies.',
    test:p=>anyEsp(p,'ELFX Shadows')||anyEsp(p,'ELFX Patch')},
-
-  // ---- Natural Waterfalls ----
   {name:"Natural Waterfalls", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Natural+Waterfalls',
    test:p=>anyEsp(p,'Natural Waterfalls')},
-
-  // ---- Dragons Use Thu'um ----
   {name:"Dragons Use Thu'um", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Dragons+Use+Thuum',
    test:p=>anyEsp(p,'DragonsUseThuum')},
-
-  // ---- Modern Wait Menu ----
   {name:"Modern Wait Menu", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Modern+Wait+Menu',
    test:p=>p.some(x=>/Modern-Wait-Menu/i.test(x))},
-
-  // ---- SKSE DLL plugins that ship without Nexus archive names ----
-  {name:"FUCK - Fores Ultimate... (SKSE plugin)", verdict:'keepguid',
-   note:'SKSE .dll plugin — installs without a Nexus archive record, so it stays a GUID. Harmless.',
-   test:p=>p.some(x=>/\bFUCK\.dll\b/i.test(x))},
-  {name:"FUCK-RACE (SKSE plugin)", verdict:'keepguid',
-   note:'SKSE .dll plugin — will always show a GUID. Harmless.',
-   test:p=>p.some(x=>/FUCK-RACE\.dll/i.test(x))},
-  {name:"First Person Camera Settle (SKSE plugin)", verdict:'keepguid',
-   note:'SKSE .dll plugin — no Nexus archive record, stays a GUID.',
-   test:p=>p.some(x=>/FPCameraSettle/i.test(x))},
-
-  // ---- Community Shaders stack — always GUID ----
-  {name:"Community Shaders (core)", verdict:'keepguid',
-   note:'Community Shaders installs as a bundle with no per-mod Nexus archive — always a GUID.',
-   test:p=>p.some(x=>/Interface\\CommunityShaders|SKSE\\Plugins\\CommunityShaders/i.test(x))},
-  {name:"RELight (Community Shaders)", verdict:'keepguid',
-   note:'CS light plugin — bundled, always a GUID.',
-   test:p=>p.some(x=>/SKSE\\Plugins\\RELight|ReLight\.ini|Relight\.dll|Relight\.pdb/i.test(x))},
-  {name:"Upscaling / Streamline / FidelityFX (CS feature)", verdict:'keepguid',
-   note:'A Community Shaders feature — always a GUID.',
-   test:p=>p.some(x=>/Shaders\\Upscaling|Upscaling\.ini/i.test(x))},
-  {name:"Screen Space GI (CS feature)", verdict:'keepguid',
-   note:'A Community Shaders feature — always a GUID.',
-   test:p=>p.some(x=>/ScreenSpaceGI/i.test(x))},
-
-  // ---- Light Placer CS json snippets ----
-  {name:"CS Light snippet (Light Placer)", verdict:'keepguid',
-   note:'A single Light Placer json — collection/CS-side, stays a GUID.',
-   test:p=>p.every(x=>/^LightPlacer\\/i.test(x))&&p.length<=2},
-
-  // ---- GTS collection-internal ESPs — always GUID ----
-  {name:"GTS - PBR VO Cleanup ESPs (collection-internal)", verdict:'keepguid',
-   note:"The collection's own cleanup plugins — not standalone on Nexus, always a GUID.",
-   test:p=>anyEsp(p,'GTS - PBR VO')&&anyEsp(p,'Cleanup')},
-  {name:"GTS - PBR VO Holidays Fixes (collection-internal)", verdict:'keepguid',
-   note:"Collection-internal plugin — always a GUID.",
-   test:p=>anyEsp(p,'Holidays Fixes')},
-  {name:"GTS Patches (collection-internal)", verdict:'keepguid',
-   note:"Collection-internal patches — always a GUID.",
-   test:p=>anyEsp(p,'GTS Patches')||anyEsp(p,'for GTS')},
-
-  // ---- Quest Givers Have Icons AIO-K (user's own) ----
-  {name:"Quest Givers Have Icons — AIO-K", verdict:'keepguid',
-   note:'A per-collection INI mod — installed locally, stays a GUID.',
-   test:p=>p.some(x=>/QGI_.*_GTS_AIO-K\.ini/i.test(x))},
-
-  // ---- moreHUD swf fix (user's own) ----
-  {name:"moreHUD ahzhudinfo.swf (manual fix)", verdict:'keepguid',
-   note:'A hand-edited Scaleform file — no Nexus source, always a GUID.',
-   test:p=>p.length<=2&&p.some(x=>/ahzhudinfo\.swf/i.test(x))},
-
-  // ---- SigmaDaggers animation ----
-  {name:"Sigma Daggers animations (OAR)", verdict:'fixable',
+  {name:"Sigma Daggers animations", verdict:'fixable',
    nexus:'https://www.nexusmods.com/skyrimspecialedition/search/?gsearch=Sigma+Daggers',
    test:p=>p.some(x=>/SigmaDaggers/i.test(x))},
-
-  // ---- SMIM CreationClub / dwemer mesh replacers (generic) ----
-  {name:"Mesh replacer (Dwemer/CreationClub)", verdict:'unknown',
+  {name:"FUCK — Fores' Ultimate... (SKSE plugin)", verdict:'keepguid',
+   note:'SKSE .dll plugin — installs without a Nexus archive record, so it stays a code. Harmless.',
+   test:p=>p.some(x=>/\bFUCK\.dll\b/i.test(x))},
+  {name:"FUCK-RACE (SKSE plugin)", verdict:'keepguid',
+   note:'SKSE .dll plugin — always a code. Harmless.',
+   test:p=>p.some(x=>/FUCK-RACE\.dll/i.test(x))},
+  {name:"First Person Camera Settle (SKSE plugin)", verdict:'keepguid',
+   note:'SKSE .dll plugin — no Nexus archive record, stays a code.',
+   test:p=>p.some(x=>/FPCameraSettle/i.test(x))},
+  {name:"Community Shaders (core)", verdict:'keepguid',
+   note:'Installs as a bundle with no per-mod Nexus archive — always a code.',
+   test:p=>p.some(x=>/Interface\\CommunityShaders|SKSE\\Plugins\\CommunityShaders/i.test(x))},
+  {name:"RELight (Community Shaders)", verdict:'keepguid',
+   note:'CS light plugin — bundled, always a code.',
+   test:p=>p.some(x=>/SKSE\\Plugins\\RELight|ReLight\.ini|Relight\.dll|Relight\.pdb/i.test(x))},
+  {name:"Upscaling / Streamline / FidelityFX (CS feature)", verdict:'keepguid',
+   note:'A Community Shaders feature — always a code.',
+   test:p=>p.some(x=>/Shaders\\Upscaling|Upscaling\.ini/i.test(x))},
+  {name:"Screen Space GI (CS feature)", verdict:'keepguid',
+   note:'A Community Shaders feature — always a code.',
+   test:p=>p.some(x=>/ScreenSpaceGI/i.test(x))},
+  {name:"CS Light snippet (Light Placer)", verdict:'keepguid',
+   note:'A single Light Placer json — collection/CS-side, stays a code.',
+   test:p=>p.length<=2&&p.every(x=>/^LightPlacer\\/i.test(x))},
+  {name:"GTS — PBR VO Cleanup ESPs (collection-internal)", verdict:'keepguid',
+   note:"The collection's own cleanup plugins — not standalone on Nexus, always a code.",
+   test:p=>anyEsp(p,'GTS - PBR VO')&&anyEsp(p,'Cleanup')},
+  {name:"GTS — PBR VO Holidays Fixes (collection-internal)", verdict:'keepguid',
+   note:"Collection-internal plugin — always a code.",
+   test:p=>anyEsp(p,'Holidays Fixes')},
+  {name:"GTS Patches (collection-internal)", verdict:'keepguid',
+   note:"Collection-internal patches — always a code.",
+   test:p=>anyEsp(p,'GTS Patches')||anyEsp(p,'for GTS')},
+  {name:"Quest Givers Have Icons — AIO-K", verdict:'keepguid',
+   note:'A per-collection INI mod — installed locally, stays a code.',
+   test:p=>p.some(x=>/QGI_.*_GTS_AIO-K\.ini/i.test(x))},
+  {name:"moreHUD ahzhudinfo.swf (manual fix)", verdict:'keepguid',
+   note:'A hand-edited Scaleform file — no Nexus source, always a code.',
+   test:p=>p.length<=2&&p.some(x=>/ahzhudinfo\.swf/i.test(x))},
+  {name:"Mesh replacer (Dwemer / Creation Club)", verdict:'unknown',
    test:p=>p.some(x=>/creationclub/i.test(x))&&p.some(x=>/dwemer|dwe/i.test(x))},
   {name:"Windhelm mesh replacer", verdict:'unknown',
-   test:p=>p.every(x=>/architecture\\windhelm/i.test(x))},
+   test:p=>p.length>1&&p.every(x=>/architecture\\windhelm/i.test(x))},
   {name:"Ice cave mesh replacer", verdict:'unknown',
-   test:p=>p.every(x=>/caves\\ice|caveishaft|caveihall/i.test(x))},
+   test:p=>p.length>1&&p.every(x=>/caves\\ice|caveishaft|caveihall/i.test(x))},
 ];
 
-// ---- fingerprint helpers ----
-function hasJson(paths,name){
-  const t=name.toLowerCase();
-  return paths.some(p=>{const s=p.toLowerCase();return s.startsWith('pbrnifpatcher\\')&&s.endsWith(t);});
-}
-function subPBR(paths,folder){
-  const t=('textures\\pbr\\'+folder).toLowerCase();
-  return paths.some(p=>p.toLowerCase().startsWith(t));
-}
-function anyEsp(paths,frag){
-  const t=frag.toLowerCase();
-  return paths.some(p=>p.toLowerCase().endsWith('.esp')&&p.toLowerCase().includes(t));
-}
+function hasJson(paths,name){const t=name.toLowerCase();return paths.some(p=>{const s=p.toLowerCase();return s.startsWith('pbrnifpatcher\\')&&s.endsWith(t);});}
+function subPBR(paths,folder){const t=('textures\\pbr\\'+folder).toLowerCase();return paths.some(p=>p.toLowerCase().startsWith(t));}
+function anyEsp(paths,frag){const t=frag.toLowerCase();return paths.some(p=>p.toLowerCase().endsWith('.esp')&&p.toLowerCase().includes(t));}
 
 const GUID_RE=/^[0-9a-f]{2}_[0-9a-f]{2}_[0-9a-f]{2}_[0-9a-f]{8}-/i;
+let MODS=[], currentFilter='inpg', currentSearch='';
 
-let MODS=[]; // {guid, name, verdict, note, nexus, count, folders:[[folder,n]], fingerprint}
-
-function identify(guid,paths){
-  for(const rule of DB){
-    try{ if(rule.test(paths)) return {...rule, matched:true}; }catch(e){}
-  }
-  return {name:null, verdict:'unknown', matched:false};
-}
-
-function topFolders(paths,k=6){
-  const m={};
-  for(const p of paths){
-    const parts=p.split('\\');
-    const key=parts.length>=3?parts.slice(0,3).join('\\'):p;
-    m[key]=(m[key]||0)+1;
-  }
-  return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,k);
-}
-function pickFingerprint(paths){
-  const j=paths.find(p=>/^pbrnifpatcher\\[^\\]+\.json$/i.test(p));
-  if(j) return 'PBRNifPatcher json: '+j.split('\\')[1];
-  const esp=paths.find(p=>/\.esp$/i.test(p));
-  if(esp) return 'plugin: '+esp.split('\\').pop();
-  return null;
-}
+function identify(paths){for(const r of DB){try{if(r.test(paths))return r;}catch(e){}}return {name:null,verdict:'unknown'};}
+// PGPatcher only lists mods carrying PBR material data — textures\PBR\ or a PBRNifPatcher config.
+// Everything else (ESP-only patches, SKSE dll plugins, Community Shaders) never shows a bogus name in PG.
+function pgVisible(paths){for(const p of paths){const pl=p.toLowerCase().replace(/\//g,'\\');if(pl.startsWith('textures\\pbr\\'))return true;if(pl.startsWith('pbrnifpatcher\\'))return true;}return false;}
+function topFolders(paths,k=6){const m={};for(const p of paths){const parts=p.split('\\');const key=parts.length>=3?parts.slice(0,3).join('\\'):p;m[key]=(m[key]||0)+1;}return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,k);}
+function pickFingerprint(paths){const j=paths.find(p=>/^pbrnifpatcher\\[^\\]+\.json$/i.test(p));if(j)return'PBRNifPatcher json: '+j.split('\\')[1];const e=paths.find(p=>/\.esp$/i.test(p));if(e)return'plugin: '+e.split('\\').pop();return null;}
 
 function analyze(json){
-  const files=json.files||[];
-  const groups={};
-  for(const e of files){
-    if(e && typeof e.source==='string' && GUID_RE.test(e.source)){
-      (groups[e.source]=groups[e.source]||[]).push(e.relPath);
-    }
-  }
+  const files=json.files||[];const groups={};
+  for(const e of files){if(e&&typeof e.source==='string'&&GUID_RE.test(e.source)){(groups[e.source]=groups[e.source]||[]).push(e.relPath);}}
   const out=[];
   for(const [guid,paths] of Object.entries(groups)){
-    const id=identify(guid,paths);
-    out.push({
-      guid, name:id.name, verdict:id.verdict, note:id.note||'', nexus:id.nexus||'',
-      count:paths.length, folders:topFolders(paths),
-      fingerprint:pickFingerprint(paths)
-    });
+    const id=identify(paths);
+    out.push({guid,name:id.name,verdict:id.verdict,note:id.note||'',nexus:id.nexus||'',count:paths.length,folders:topFolders(paths),fingerprint:pickFingerprint(paths),inPG:pgVisible(paths)});
   }
-  out.sort((a,b)=>b.count-a.count);
-  return out;
+  out.sort((a,b)=>b.count-a.count);return out;
 }
 
-/* ---- rendering ---- */
 const $=s=>document.querySelector(s);
-let currentFilter='all', currentSearch='';
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
 function render(){
-  const box=$('#results'); box.innerHTML='';
+  const box=$('#results');box.innerHTML='';
   const q=currentSearch.trim().toLowerCase();
+  const note=$('#filterNote');
+  if(q){note.className='filter-note show';note.innerHTML='Searching <b>all</b> GUID mods for “'+escapeHtml(currentSearch.trim())+'”.';}
+  else if(currentFilter==='inpg'){note.className='filter-note show';note.innerHTML='Showing only mods that <b>appear in PGPatcher</b> — these are the ones whose codes you actually see there. The rest are hidden so you don\'t chase names that don\'t matter.';}
+  else if(currentFilter==='other'){note.className='filter-note show';note.innerHTML='These GUIDs <b>never show in PGPatcher</b> (ESP patches, SKSE plugins, Community Shaders). They\'re harmless — nothing to fix.';}
+  else{note.className='filter-note';note.innerHTML='';}
   const list=MODS.filter(m=>{
-    if(currentFilter!=='all' && m.verdict!==currentFilter) return false;
-    if(q){
-      const hay=(m.name||'')+' '+m.guid+' '+m.folders.map(f=>f[0]).join(' ')+' '+(m.fingerprint||'');
-      if(!hay.toLowerCase().includes(q)) return false;
+    // When searching, ignore the segment filter so people can type a code from PG and find it anywhere.
+    if(!q){
+      if(currentFilter==='inpg'&&!m.inPG)return false;
+      else if(currentFilter==='other'&&m.inPG)return false;
+      else if(currentFilter!=='inpg'&&currentFilter!=='other'&&currentFilter!=='all'&&m.verdict!==currentFilter)return false;
     }
+    if(q){const hay=((m.name||'')+' '+m.guid+' '+m.folders.map(f=>f[0]).join(' ')+' '+(m.fingerprint||'')).toLowerCase();if(!hay.includes(q))return false;}
     return true;
   });
-  if(!list.length){
-    box.innerHTML='<div style="font-family:var(--mono);color:var(--ash);padding:30px;text-align:center">No mods match.</div>';
-    return;
-  }
+  if(!list.length){box.innerHTML='<div style="font-family:var(--mono);color:var(--ash-dim);padding:28px;text-align:center">Nothing matches that filter.</div>';return;}
   for(const m of list){
-    const el=document.createElement('div');
-    el.className='mod '+m.verdict;
-    const pill = m.verdict==='fixable'?'Reinstall to fix'
-               : m.verdict==='keepguid'?'Leave as GUID'
-               : 'Needs a look';
+    const el=document.createElement('div');el.className='mod '+m.verdict;
+    const pill=m.verdict==='fixable'?'Reinstall to fix':m.verdict==='keepguid'?'Leave as code':'Needs a look';
     const shortG=m.guid.replace(/^([0-9a-f_]{8})[0-9a-f_]*(-[0-9a-f-]+)$/i,'$1…$2');
+    let why=m.note?escapeHtml(m.note):(m.verdict==='fixable'?'Standalone Nexus mod — <b>remove, manual-download the zip, reinstall, deploy</b> and the name resolves.':m.verdict==='keepguid'?'This will <b>always</b> show a code — it\'s bundled or has no Nexus archive. Nothing to fix; just know what it is.':'Couldn\'t identify this one confidently. Check the file locations below — the top folder usually gives it away.');
+    if(!m.inPG){why='<b>This mod doesn\'t appear in PGPatcher</b>, so its code name never bothers you there. You can safely ignore it. '+(m.verdict==='fixable'?'(If you want the tidy name in Vortex anyway, a manual reinstall would do it.)':'');}
     el.innerHTML=`
       <div class="mod-head">
-        <span class="verdict-dot"></span>
-        <div class="mod-name">${m.name?escapeHtml(m.name):'<span style="color:var(--ash)">Unidentified GUID mod</span>'}
-          <span class="guid">${escapeHtml(shortG)}</span></div>
-        <div class="mod-meta"><span class="pill">${pill}</span><span>${m.count} files</span><span class="chev">▶</span></div>
+        <span class="dot"></span>
+        <div class="mod-name">${m.name?escapeHtml(m.name):'Unidentified GUID mod'}<span class="guid">${escapeHtml(shortG)}</span></div>
+        <div class="mod-meta">${m.inPG?'':'<span class="ghost">not in PG</span>'}<span class="pill">${pill}</span><span>${m.count} files</span><span class="chev">▶</span></div>
       </div>
       <div class="mod-body">
-        ${m.note?`<p class="why">${escapeHtml(m.note)}</p>`:(m.verdict==='fixable'?`<p class="why">Standalone Nexus mod — <b>remove, manual-download the zip, reinstall, deploy</b> and the name resolves.</p>`:m.verdict==='keepguid'?`<p class="why">This will <b>always</b> show a GUID — it's bundled or has no Nexus archive record. Nothing to fix; just know what it is.</p>`:`<p class="why">Couldn't fingerprint this one confidently. Check the paths below — the top folder usually gives it away.</p>`)}
-        ${m.nexus?`<a class="link" href="${m.nexus}" target="_blank" rel="noopener">◈ Open on Nexus →</a>`:''}
-        ${m.fingerprint?`<div class="fp"><span>fingerprint · </span>${escapeHtml(m.fingerprint)}</div>`:''}
-        <p class="paths-h" style="margin-top:14px">Top file locations</p>
+        <p class="why">${why}</p>
+        ${m.nexus?`<a class="link" href="${m.nexus}" target="_blank" rel="noopener">◈ Find on Nexus →</a>`:''}
+        ${m.fingerprint?`<p class="fp"><span>matched on · </span>${escapeHtml(m.fingerprint)}</p>`:''}
+        <p class="paths-h">Top file locations</p>
         <div class="paths">${m.folders.map(f=>`<div class="row"><span class="cnt">${f[1]}</span><span>${escapeHtml(f[0])}</span></div>`).join('')}</div>
       </div>`;
     el.querySelector('.mod-head').addEventListener('click',()=>el.classList.toggle('open'));
     box.appendChild(el);
   }
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
 function showResults(){
-  const fix=MODS.filter(m=>m.verdict==='fixable').length;
-  const keep=MODS.filter(m=>m.verdict==='keepguid').length;
-  const filesDecoded=MODS.reduce((a,m)=>a+m.count,0);
-  $('#s-total').textContent=MODS.length;
-  $('#s-fix').textContent=fix;
-  $('#s-keep').textContent=keep;
-  $('#s-files').textContent=filesDecoded.toLocaleString();
-  $('#summary').classList.add('show');
-  $('#controls').classList.add('show');
-  render();
+  const inPG=MODS.filter(m=>m.inPG);
+  const fixablePG=inPG.filter(m=>m.verdict==='fixable').length;
+  $('#s-total').textContent=inPG.length;
+  $('#s-fix').textContent=fixablePG;
+  $('#s-keep').textContent=MODS.length-inPG.length;
+  $('#s-files').textContent=MODS.reduce((a,m)=>a+m.count,0).toLocaleString();
+  $('#summary').classList.add('show');$('#controls').classList.add('show');render();
+  $('#summary').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+function fail(msg){const e=$('#err');e.innerHTML=msg;e.classList.add('show');$('#summary').classList.remove('show');$('#controls').classList.remove('show');$('#results').innerHTML='';}
 
 function handleFile(file){
   $('#err').classList.remove('show');
   const reader=new FileReader();
   reader.onload=()=>{
     let json;
-    try{ json=JSON.parse(reader.result); }
-    catch(e){ return fail("That file isn't valid JSON. Make sure it's <b>vortex.deployment.json</b>, not a zip or a different file."); }
-    if(!json.files || !Array.isArray(json.files)) return fail("This JSON has no <b>files</b> list — it doesn't look like a Vortex deployment manifest.");
+    try{json=JSON.parse(reader.result);}catch(e){return fail("That file isn't valid JSON. Make sure it's <b>vortex.deployment.json</b> and not a zip or something else.");}
+    if(!json.files||!Array.isArray(json.files))return fail("This JSON has no <b>files</b> list — it doesn't look like a Vortex deployment manifest.");
     MODS=analyze(json);
-    if(!MODS.length) return fail("No GUID-named mods found — every mod in this file already has a proper name. Nothing to decode!");
+    if(!MODS.length)return fail("Good news — no coded mod names found. Every mod in this file already has a proper name.");
     showResults();
   };
   reader.onerror=()=>fail("Couldn't read that file.");
   reader.readAsText(file);
 }
-function fail(msg){const e=$('#err');e.innerHTML=msg;e.classList.add('show');$('#summary').classList.remove('show');$('#controls').classList.remove('show');$('#results').innerHTML='';}
 
-/* ---- wiring ---- */
-const forge=$('#forge'), fileInput=$('#file');
-fileInput.addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0]);});
+const forge=$('#forge');
+$('#file').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0]);});
 ['dragenter','dragover'].forEach(ev=>forge.addEventListener(ev,e=>{e.preventDefault();forge.classList.add('hot');}));
 ['dragleave','drop'].forEach(ev=>forge.addEventListener(ev,e=>{e.preventDefault();forge.classList.remove('hot');}));
 forge.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleFile(f);});
-
-$('#filterSeg').addEventListener('click',e=>{
-  const b=e.target.closest('button'); if(!b)return;
-  $('#filterSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-  b.classList.add('on'); currentFilter=b.dataset.f; render();
-});
+$('#filterSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#filterSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');currentFilter=b.dataset.f;render();});
 $('#search').addEventListener('input',e=>{currentSearch=e.target.value;render();});
 </script>
 </body>

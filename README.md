@@ -10,22 +10,35 @@ This tool reads that file and tells you what each GUID mod actually is.
 
 ## What it does
 
-Drop your `vortex.deployment.json` in and it will, for every GUID-named mod:
+Drop your `vortex.deployment.json` in and, by default, it shows only the mods
+that **actually appear in PGPatcher** — the ones whose coded names you really
+see there. For each it will:
 
 - **Identify it** from the files it deploys (using the `PBRNifPatcher\<name>.json`
   filename, distinctive texture folders, and plugin names as fingerprints)
 - **Give a verdict:**
   - 🟢 **Reinstall to fix** — a standalone Nexus mod. Remove it, manually
     download the zip, reinstall, deploy, and the name resolves. Links to Nexus.
-  - 🔴 **Leave as GUID** — Community Shaders parts, collection-internal ESPs,
-    SKSE `.dll` plugins, and hand-made files. These will *always* show a GUID.
-    Nothing to fix — you just need to know what they are.
-  - ⚪ **Needs a look** — couldn't fingerprint it confidently; shows the file
-    paths so you can identify it yourself.
-- **Show the top file locations** for each mod, so you can order it in
-  PGPatcher by what it actually touches even if the name can't be fixed.
+  - 🔴 **Leave as code** — bundled or no Nexus archive; the code is permanent
+    and harmless.
+  - ⚪ **Needs a look** — couldn't fingerprint it; shows file paths so you can
+    identify it yourself.
+- **Show the top file locations**, so you can order it in PGPatcher by what it
+  actually touches even if the name can't be fixed.
 
-Filter by verdict, search by name or path.
+### It won't over-report
+
+Most GUID-coded entries in the file (ESP-only patches, SKSE `.dll` plugins,
+Community Shaders parts) **never appear in PGPatcher at all**, so their codes
+don't matter. Those are hidden by default under the **Other GUIDs** tab so you
+don't panic or reinstall things you shouldn't. The headline count is only the
+mods PGPatcher actually shows you.
+
+### Finding one specific mod
+
+Got a code in front of you in PGPatcher? Paste it (or part of it, e.g.
+`99_33_27`) into the search box and it jumps straight to that mod with its real
+name and verdict — searching across everything, in or out of PGPatcher.
 
 ## Privacy
 
@@ -35,7 +48,7 @@ read the source right here to confirm that.
 
 ## How to use
 
-1. Open the tool (link above / hosted page).
+1. Open the tool (the hosted page / link at the top of this repo).
 2. Find your `vortex.deployment.json` — usually in
    `...\Skyrim Special Edition\Data\`.
 3. Drag it in.
@@ -52,8 +65,8 @@ collection, so it recognises that setup's mods well. On other load orders it
 will still find every GUID mod and show its file paths, but may mark more of
 them "Needs a look" if it doesn't have a fingerprint for them yet.
 
-Adding a mod is easy — each entry in the `DB` array near the top of the HTML
-is one rule. PRs with new fingerprints welcome.
+Adding a mod is easy — each entry in the `DB` array near the top of
+`index.html` is one rule. PRs with new fingerprints welcome.
 
 ## Credit
 
