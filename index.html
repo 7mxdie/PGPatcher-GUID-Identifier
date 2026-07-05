@@ -105,7 +105,10 @@
   .stat.fix .n{color:var(--moss-solid)}
   .stat.keep .n{color:var(--ember-solid)}
 
-  .controls{display:none;gap:10px;margin:20px 0 4px;flex-wrap:wrap;align-items:center}
+  .search-help{display:none;font-family:var(--mono);font-size:11.5px;color:var(--ash);margin:20px 2px 0;line-height:1.6}
+  .search-help.show{display:block}
+  .search-help code{color:var(--frost);background:rgba(99,182,199,.07);padding:1px 6px;border-radius:5px}
+  .controls{display:none;gap:10px;margin:12px 0 4px;flex-wrap:wrap;align-items:center}
   .controls.show{display:flex}
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--slate)}
   .seg button{background:transparent;color:var(--ash);border:0;padding:9px 15px;font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.03em;border-right:1px solid var(--line);transition:background .12s,color .12s}
@@ -169,12 +172,12 @@
   <section class="hero">
     <p class="kicker">Vortex Deployment Decoder</p>
     <h1>Name the <span class="glint">nameless</span> mods<br>PGPatcher won't.</h1>
-    <p class="lede">PGPatcher shows some mods as garbled codes like <code>99_33_27_993327ba…</code> instead of their real names. This reads your <code>vortex.deployment.json</code>, works out what each one actually is, and tells you whether reinstalling will fix the name — or whether it's a lost cause worth leaving alone.</p>
+    <p class="lede">PGPatcher shows some mods as garbled codes like <code>99_33_27_993327ba…</code> instead of their real names. This reads your <code>vortex.deployment.json</code> and works out what each coded mod actually is — so you can match them to your PGPatcher screen and know which ones a reinstall would fix, and which to leave alone.</p>
 
     <div class="steps">
       <div class="step"><div class="num">1</div><h3>Find your file</h3><p>Locate <code>vortex.deployment.json</code> — see the note just below.</p></div>
       <div class="step"><div class="num">2</div><h3>Drop it in</h3><p>Drag the file onto the panel below. It's read on your device — nothing is uploaded.</p></div>
-      <div class="step"><div class="num">3</div><h3>Read the verdicts</h3><p>Green = reinstall to fix the name. Red = leave it, the code is permanent and harmless.</p></div>
+      <div class="step"><div class="num">3</div><h3>Match your screen</h3><p>Compare the list to the codes actually showing in your PGPatcher. Green ones showing a code can be reinstalled to fix the name.</p></div>
     </div>
 
     <div class="findfile">
@@ -193,12 +196,13 @@
   </section>
 
   <div class="summary" id="summary">
-    <div class="stat total"><div class="n" id="s-total">0</div><div class="l">Shown in PGPatcher</div></div>
-    <div class="stat fix"><div class="n" id="s-fix">0</div><div class="l">Worth reinstalling</div></div>
+    <div class="stat total"><div class="n" id="s-total">0</div><div class="l">PBR mods with codes</div></div>
+    <div class="stat fix"><div class="n" id="s-fix">0</div><div class="l">Fixable if coded</div></div>
     <div class="stat keep"><div class="n" id="s-keep">0</div><div class="l">Not in PGPatcher</div></div>
     <div class="stat"><div class="n" id="s-files">0</div><div class="l">Files decoded</div></div>
   </div>
 
+  <p class="search-help" id="searchHelp">Got a code showing in your PGPatcher? Type the start of it (e.g. <code>99_33_27</code>) in the box on the right to jump straight to it.</p>
   <div class="controls" id="controls">
     <div class="seg" id="filterSeg">
       <button data-f="inpg" class="on">In PGPatcher</button>
@@ -350,7 +354,7 @@ function render(){
   const q=currentSearch.trim().toLowerCase();
   const note=$('#filterNote');
   if(q){note.className='filter-note show';note.innerHTML='Searching <b>all</b> GUID mods for “'+escapeHtml(currentSearch.trim())+'”.';}
-  else if(currentFilter==='inpg'){note.className='filter-note show';note.innerHTML='Showing only mods that <b>appear in PGPatcher</b> — these are the ones whose codes you actually see there. The rest are hidden so you don\'t chase names that don\'t matter.';}
+  else if(currentFilter==='inpg'){note.className='filter-note show';note.innerHTML='These are PBR mods with coded sources — the ones that <b>can</b> show a code in PGPatcher. <b>Not all of them will</b>: many already show a proper name. Match this list against what you actually see coded in your PGPatcher window, and only reinstall the ones that are genuinely showing a code there.';}
   else if(currentFilter==='other'){note.className='filter-note show';note.innerHTML='These GUIDs <b>never show in PGPatcher</b> (ESP patches, SKSE plugins, Community Shaders). They\'re harmless — nothing to fix.';}
   else{note.className='filter-note';note.innerHTML='';}
   const list=MODS.filter(m=>{
@@ -366,9 +370,9 @@ function render(){
   if(!list.length){box.innerHTML='<div style="font-family:var(--mono);color:var(--ash-dim);padding:28px;text-align:center">Nothing matches that filter.</div>';return;}
   for(const m of list){
     const el=document.createElement('div');el.className='mod '+m.verdict;
-    const pill=m.verdict==='fixable'?'Reinstall to fix':m.verdict==='keepguid'?'Leave as code':'Needs a look';
+    const pill=m.verdict==='fixable'?'Fixable if coded':m.verdict==='keepguid'?'Leave as code':'Needs a look';
     const shortG=m.guid.replace(/^([0-9a-f_]{8})[0-9a-f_]*(-[0-9a-f-]+)$/i,'$1…$2');
-    let why=m.note?escapeHtml(m.note):(m.verdict==='fixable'?'Standalone Nexus mod — <b>remove, manual-download the zip, reinstall, deploy</b> and the name resolves.':m.verdict==='keepguid'?'This will <b>always</b> show a code — it\'s bundled or has no Nexus archive. Nothing to fix; just know what it is.':'Couldn\'t identify this one confidently. Check the file locations below — the top folder usually gives it away.');
+    let why=m.note?escapeHtml(m.note):(m.verdict==='fixable'?'A standalone Nexus mod. <b>If it\'s showing a code in your PGPatcher</b>, remove it, manual-download the zip, reinstall and deploy to resolve the name. If it already shows a proper name, leave it — nothing to do.':m.verdict==='keepguid'?'This will <b>always</b> show a code — it\'s bundled or has no Nexus archive. Nothing to fix; just know what it is.':'Couldn\'t identify this one confidently. Check the file locations below — the top folder usually gives it away.');
     if(!m.inPG){why='<b>This mod doesn\'t appear in PGPatcher</b>, so its code name never bothers you there. You can safely ignore it. '+(m.verdict==='fixable'?'(If you want the tidy name in Vortex anyway, a manual reinstall would do it.)':'');}
     el.innerHTML=`
       <div class="mod-head">
@@ -395,7 +399,7 @@ function showResults(){
   $('#s-fix').textContent=fixablePG;
   $('#s-keep').textContent=MODS.length-inPG.length;
   $('#s-files').textContent=MODS.reduce((a,m)=>a+m.count,0).toLocaleString();
-  $('#summary').classList.add('show');$('#controls').classList.add('show');render();
+  $('#summary').classList.add('show');$('#controls').classList.add('show');$('#searchHelp').classList.add('show');render();
   $('#summary').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function fail(msg){const e=$('#err');e.innerHTML=msg;e.classList.add('show');$('#summary').classList.remove('show');$('#controls').classList.remove('show');$('#results').innerHTML='';}
