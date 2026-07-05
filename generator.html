@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTS Data Generator — build gts-mods.json</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0c0e12;--slate:#151922;--slate-2:#1c222d;--line:#2a323f;--line-2:#39434f;
+    --ash:#8d97a6;--ash-dim:#616b78;--parchment:#eae4d6;--rune:#cba24d;--frost:#63b6c7;--moss:#74a05c;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;--display:'Cinzel',Georgia,serif;
+    --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:radial-gradient(1000px 500px at 80% -10%,rgba(203,162,77,.06),transparent 60%),var(--void);color:var(--parchment);font-family:var(--body);line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:840px;margin:0 auto;padding:48px 24px 90px}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--rune);margin:0 0 14px}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.5vw,38px);margin:0 0 14px;line-height:1.05}
+  .lede{color:var(--ash);font-size:15px;margin:0 0 8px;max-width:64ch}
+  .card{border:1px solid var(--line);border-radius:14px;background:linear-gradient(178deg,var(--slate-2),var(--slate));padding:30px;box-shadow:0 20px 50px -24px rgba(0,0,0,.8);margin-top:24px}
+  .steps{font-family:var(--mono);font-size:12.5px;color:var(--ash);line-height:1.9;margin:0 0 20px;padding-left:0;list-style:none}
+  .steps b{color:var(--parchment)}
+  .steps .n{color:var(--rune);margin-right:8px}
+  .forge{border:1.5px dashed var(--line-2);border-radius:12px;background:var(--slate);padding:30px;text-align:center;cursor:pointer;transition:border-color .18s,background .18s;display:block}
+  .forge:hover{border-color:var(--rune)}
+  .forge.hot{border-color:var(--rune);background:rgba(203,162,77,.06)}
+  .forge .big{font-size:15px;font-weight:600;color:var(--parchment)}
+  .forge .small{display:block;color:var(--ash-dim);margin-top:7px;font-size:12px;font-family:var(--mono)}
+  input[type=file]{display:none}
+  .rev-row{display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap}
+  .rev-row label{font-family:var(--mono);font-size:12px;color:var(--ash)}
+  .rev-row input{background:var(--slate);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--parchment);font-family:var(--mono);font-size:13px;width:110px}
+  .rev-row input:focus{outline:none;border-color:var(--frost)}
+  .out{display:none;margin-top:22px}
+  .out.show{display:block}
+  .summary{font-family:var(--mono);font-size:12.5px;color:var(--moss);margin-bottom:12px}
+  .summary b{color:var(--parchment)}
+  textarea{width:100%;height:280px;background:#0a0c10;border:1px solid var(--line);border-radius:10px;color:var(--parchment);font-family:var(--mono);font-size:11.5px;padding:14px;resize:vertical;line-height:1.5}
+  .btnrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  button.act{background:var(--rune);color:var(--void);border:0;border-radius:9px;padding:11px 18px;font-family:var(--mono);font-size:12.5px;font-weight:600;cursor:pointer;letter-spacing:.03em}
+  button.act.ghost{background:transparent;color:var(--frost);border:1px solid rgba(99,182,199,.35)}
+  .err{display:none;margin-top:16px;border:1px solid rgba(211,87,65,.4);background:rgba(211,87,65,.08);border-radius:10px;padding:13px 16px;font-size:13.5px}
+  .err.show{display:block}
+  .note{font-family:var(--mono);font-size:11.5px;color:var(--ash-dim);margin-top:16px;line-height:1.7}
+  code{font-family:var(--mono);color:var(--frost);background:rgba(99,182,199,.07);padding:1px 6px;border-radius:5px;font-size:.92em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">GTS Data Generator</p>
+  <h1>Build <code>gts-mods.json</code></h1>
+  <p class="lede">Drop the <b>collection owner's</b> <code>vortex.deployment.json</code> in here. It reads every properly-named mod and builds the fingerprint database the Decoder uses — so GTS users get exact names for the whole collection. Run this once per collection revision.</p>
+
+  <div class="card">
+    <ol class="steps">
+      <li><span class="n">1</span>Get the owner's <b>vortex.deployment.json</b> (their file has clean names, not codes).</li>
+      <li><span class="n">2</span>Set the revision number, then drop the file below.</li>
+      <li><span class="n">3</span>Copy or download the generated <b>gts-mods.json</b> and commit it to the repo.</li>
+    </ol>
+
+    <div class="rev-row">
+      <label for="rev">Collection revision:</label>
+      <input id="rev" type="text" placeholder="e.g. 56" value="">
+    </div>
+
+    <label class="forge" id="forge" for="file" style="margin-top:18px">
+      <span class="big">Drop the owner's vortex.deployment.json here</span>
+      <span class="small">read locally · nothing uploaded</span>
+      <input type="file" id="file" accept=".json,application/json">
+    </label>
+
+    <div class="err" id="err"></div>
+
+    <div class="out" id="out">
+      <div class="summary" id="summary"></div>
+      <textarea id="output" spellcheck="false" readonly></textarea>
+      <div class="btnrow">
+        <button class="act" id="copyBtn">Copy to clipboard</button>
+        <button class="act ghost" id="dlBtn">Download gts-mods.json</button>
+      </div>
+    </div>
+
+    <p class="note">How it works: for every mod in the owner's file it extracts a clean name (stripping the Nexus ID and version), the Nexus mod link where present, and a fingerprint (the <code>PBRNifPatcher</code> json name, a distinctive PBR folder, or a plugin). Only PBR/PGPatcher-relevant mods are included — the ones that can show a code for other users.</p>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+let RESULT='';
+
+// A named source looks like: ModName-{nexusID}-{version}-{timestamp}
+// Strip from the trailing -{digits}-... group onward to get a clean name.
+function cleanName(src){
+  // remove trailing -<id>-<ver...>-<timestamp> (numeric-ish groups at the end)
+  let n=src.replace(/-\d{2,}(?:-[0-9A-Za-z.]+)*-\d{9,}$/,'');
+  // if that didn't catch it, try a looser strip of a trailing -<digits> chain
+  if(n===src)n=src.replace(/-\d{3,}.*$/,'');
+  n=n.replace(/^['"]|['"]$/g,'').trim();
+  return n||src;
+}
+function nexusId(src){
+  const m=src.match(/-(\d{3,7})-\d/);
+  return m?m[1]:null;
+}
+function pgRelevant(paths){
+  return paths.some(p=>{const pl=p.toLowerCase();return pl.startsWith('textures\\pbr\\')||pl.startsWith('pbrnifpatcher\\');});
+}
+// Build the best fingerprint for a mod, preferring the most specific/stable signal.
+function buildSig(paths){
+  // 1) top-level PBRNifPatcher json — most stable, often the exact name
+  const topJson=paths.find(p=>/^pbrnifpatcher\\[^\\]+\.json$/i.test(p));
+  if(topJson)return {pbrNifJson:topJson.split('\\')[1]};
+  // 2) distinctive PBR subfolder (skip generic ones that many mods share)
+  const subs={};
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/^textures\\pbr\\([^\\]+)\\/);if(m)subs[m[1]]=(subs[m[1]]||0)+1;}
+  const best=Object.entries(subs).sort((a,b)=>b[1]-a[1])[0];
+  if(best&&!/^(architecture|landscape|clutter|plants|actors|weapons|armor|misc|creationclub|effects|sky|interface)$/i.test(best[0]))
+    return {pbrFolder:best[0]};
+  // 3) a distinctive path fragment: pick the longest unusual folder segment under pbr
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/pbrnifpatcher\\([^\\]+)\\/);if(m&&!/^creationclub$/i.test(m[1]))return {pathContains:m[1]};}
+  // 4) fall back to the dominant generic folder as a pathContains (weak but better than nothing)
+  if(best)return {pbrFolder:best[0]};
+  return null;
+}
+
+function analyze(json,revision){
+  const files=json.files||[];
+  const groups={};
+  for(const e of files){if(e&&typeof e.source==='string'){(groups[e.source]=groups[e.source]||[]).push(e.relPath);}}
+  const GUID=/^[0-9a-f]{2}_[0-9a-f]{2}_[0-9a-f]{2}_[0-9a-f]{8}-/i;
+  const mods=[]; let skippedGuid=0, skippedIrrelevant=0;
+  for(const [src,paths] of Object.entries(groups)){
+    if(GUID.test(src)){skippedGuid++;continue;}          // owner shouldn't have these, but skip if present
+    if(!pgRelevant(paths)){skippedIrrelevant++;continue;} // only PBR/PG mods matter
+    const sig=buildSig(paths);
+    if(!sig)continue;
+    const name=cleanName(src);
+    const id=nexusId(src);
+    const entry={name,verdict:'fixable',sig};
+    if(id)entry.nexus='https://www.nexusmods.com/skyrimspecialedition/mods/'+id;
+    mods.push(entry);
+  }
+  // de-dup by name+sig
+  const seen=new Set();const dedup=[];
+  for(const m of mods){const k=m.name+'|'+JSON.stringify(m.sig);if(!seen.has(k)){seen.add(k);dedup.push(m);}}
+  dedup.sort((a,b)=>a.name.localeCompare(b.name));
+  const out={revision:revision||null,updated:new Date().toISOString().slice(0,10),mods:dedup};
+  return {out,stats:{total:dedup.length,skippedGuid,skippedIrrelevant}};
+}
+
+function run(file){
+  $('#err').classList.remove('show');
+  const rev=$('#rev').value.trim();
+  const reader=new FileReader();
+  reader.onload=()=>{
+    let json;
+    try{json=JSON.parse(reader.result);}catch(e){return fail('That file is not valid JSON.');}
+    if(!json.files){return fail('No <b>files</b> list — is this a vortex.deployment.json?');}
+    const {out,stats}=analyze(json,rev);
+    if(!stats.total)return fail('No PBR mods found to index. Is this the right file?');
+    RESULT=JSON.stringify(out,null,2);
+    $('#output').value=RESULT;
+    $('#summary').innerHTML=`Built <b>${stats.total}</b> mod entries`+(rev?` for <b>Revision ${escapeHtml(rev)}</b>`:'')+`. <span style="color:var(--ash-dim)">(${stats.skippedIrrelevant} non-PBR skipped${stats.skippedGuid?', '+stats.skippedGuid+' coded skipped':''})</span>`;
+    $('#out').classList.add('show');
+  };
+  reader.onerror=()=>fail('Could not read that file.');
+  reader.readAsText(file);
+}
+function fail(m){const e=$('#err');e.innerHTML=m;e.classList.add('show');$('#out').classList.remove('show');}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+const forge=$('#forge');
+$('#file').addEventListener('change',e=>{if(e.target.files[0])run(e.target.files[0]);});
+['dragenter','dragover'].forEach(ev=>forge.addEventListener(ev,e=>{e.preventDefault();forge.classList.add('hot');}));
+['dragleave','drop'].forEach(ev=>forge.addEventListener(ev,e=>{e.preventDefault();forge.classList.remove('hot');}));
+forge.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)run(f);});
+$('#copyBtn').addEventListener('click',()=>{navigator.clipboard.writeText(RESULT).then(()=>{$('#copyBtn').textContent='Copied ✓';setTimeout(()=>$('#copyBtn').textContent='Copy to clipboard',1500);});});
+$('#dlBtn').addEventListener('click',()=>{const b=new Blob([RESULT],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='gts-mods.json';a.click();URL.revokeObjectURL(u);});
+</script>
+</body>
+</html>

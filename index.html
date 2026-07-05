@@ -138,6 +138,13 @@
   .fixable .pill{background:rgba(116,160,92,.14);color:var(--moss-solid);border:1px solid rgba(116,160,92,.32)}
   .keepguid .pill{background:rgba(211,87,65,.12);color:var(--ember-solid);border:1px solid rgba(211,87,65,.3)}
   .unknown .pill{background:rgba(141,151,166,.1);color:var(--ash);border:1px solid var(--line)}
+  .auto{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--frost);border:1px solid rgba(99,182,199,.35);border-radius:4px;padding:2px 5px;margin-left:8px;vertical-align:middle;font-weight:400;white-space:nowrap}
+  .auto.exact{color:var(--moss-solid);border-color:rgba(116,160,92,.4)}
+  .auto.likely{color:var(--rune);border-color:rgba(203,162,77,.4)}
+  .auto.amb{color:var(--ember-solid);border-color:rgba(211,87,65,.45)}
+  .evidence{border:1px solid rgba(203,162,77,.28);background:rgba(203,162,77,.05);border-radius:9px;padding:12px 14px;margin:0 0 14px}
+  .ev-h{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--rune);margin-bottom:7px}
+  .ev-row{font-family:var(--mono);font-size:12px;color:var(--parchment);line-height:1.5}
   .ghost{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-dim);border:1px dashed var(--line-2);border-radius:5px;padding:4px 7px}
   .chev{color:var(--ash-dim);transition:transform .18s;font-size:10px}
   .mod.open .chev{transform:rotate(90deg)}
@@ -156,6 +163,10 @@
 
   footer{margin-top:38px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--ash-dim);line-height:1.9}
   footer .hot{color:var(--parchment)}
+  .revstamp{display:none;font-family:var(--mono);font-size:11px;color:var(--frost);margin-bottom:12px;padding:7px 14px;border:1px solid rgba(99,182,199,.25);border-radius:8px;background:rgba(99,182,199,.05)}
+  .revstamp.show{display:inline-block}
+  .revstamp.muted{color:var(--ash-dim);border-color:var(--line);background:transparent}
+  .revstamp b{color:var(--parchment)}
 
   @media(max-width:720px){.steps{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:540px){
@@ -216,6 +227,7 @@
   <div class="results" id="results"></div>
 
   <footer>
+    <div class="revstamp" id="revStamp"></div>
     <div class="hot">Fix workflow: remove in Vortex → manual-download the zip from Nexus → reinstall → deploy → re-run PGPatcher</div>
     <div>Verdicts are inferred from each mod's files, not guaranteed. Tuned for the Gate to Sovngarde collection — other load orders may show more “Needs a look”.</div>
   </footer>
@@ -323,12 +335,123 @@ const DB = [
 
 function hasJson(paths,name){const t=name.toLowerCase();return paths.some(p=>{const s=p.toLowerCase();return s.startsWith('pbrnifpatcher\\')&&s.endsWith(t);});}
 function subPBR(paths,folder){const t=('textures\\pbr\\'+folder).toLowerCase();return paths.some(p=>p.toLowerCase().startsWith(t));}
+
+// ---- External GTS database (gts-mods.json) ----
+// Loaded at startup, replaced each collection revision. Declarative so it can live in JSON
+// (no functions). Each entry: {name, verdict?, nexus?, note?, sig:{...}}.
+// Supported sig keys: pbrNifJson (exact top-level PBRNifPatcher json filename),
+//   esp (a plugin filename contains this), pathContains (any path contains this substring),
+//   pbrFolder (has textures\PBR\<folder>\). All matched case-insensitively; multiple keys = AND.
+let GTS_DB=[];        // interpreted rules from gts-mods.json
+let GTS_META=null;    // {revision, updated, count}
+function sigToTest(sig){
+  return paths=>{
+    if(sig.pbrNifJson&&!hasJson(paths,sig.pbrNifJson.toLowerCase().endsWith('.json')?sig.pbrNifJson:sig.pbrNifJson+'.json'))return false;
+    if(sig.esp&&!anyEsp(paths,sig.esp))return false;
+    if(sig.pbrFolder&&!subPBR(paths,sig.pbrFolder))return false;
+    if(sig.pathContains){const t=sig.pathContains.toLowerCase();if(!paths.some(p=>p.toLowerCase().includes(t)))return false;}
+    // require at least one key to have been present
+    return !!(sig.pbrNifJson||sig.esp||sig.pbrFolder||sig.pathContains);
+  };
+}
+async function loadGtsDb(){
+  try{
+    const res=await fetch('gts-mods.json',{cache:'no-store'});
+    if(!res.ok)throw new Error('no file');
+    const data=await res.json();
+    const mods=Array.isArray(data)?data:(data.mods||[]);
+    GTS_DB=mods.filter(m=>m&&m.name&&m.sig).map(m=>({name:m.name,verdict:m.verdict||'fixable',nexus:m.nexus||'',note:m.note||'',test:sigToTest(m.sig)}));
+    if(!Array.isArray(data)&&data.revision){GTS_META={revision:data.revision,updated:data.updated||'',count:GTS_DB.length};}
+    else{GTS_META={revision:null,updated:'',count:GTS_DB.length};}
+  }catch(e){GTS_DB=[];GTS_META=null;} // graceful: fall back to built-in DB only
+  renderRevision();
+}
+function renderRevision(){
+  const el=document.getElementById('revStamp');if(!el)return;
+  if(GTS_META&&GTS_META.count){
+    el.innerHTML='GTS data: '+(GTS_META.revision?'<b>Revision '+escapeHtml(String(GTS_META.revision))+'</b>':'<b>loaded</b>')+(GTS_META.updated?' · updated '+escapeHtml(GTS_META.updated):'')+' · '+GTS_META.count+' mods';
+    el.className='revstamp show';
+  }else{
+    el.innerHTML='Using built-in mod list (GTS data file not loaded).';
+    el.className='revstamp show muted';
+  }
+}
+
 function anyEsp(paths,frag){const t=frag.toLowerCase();return paths.some(p=>p.toLowerCase().endsWith('.esp')&&p.toLowerCase().includes(t));}
 
 const GUID_RE=/^[0-9a-f]{2}_[0-9a-f]{2}_[0-9a-f]{2}_[0-9a-f]{8}-/i;
 let MODS=[], currentFilter='inpg', currentSearch='';
 
-function identify(paths){for(const r of DB){try{if(r.test(paths))return r;}catch(e){}}return {name:null,verdict:'unknown'};}
+function identify(paths){
+  // External GTS data (current collection revision) takes priority — it's authoritative.
+  for(const r of GTS_DB){try{if(r.test(paths))return r;}catch(e){}}
+  // Built-in fallback for when the data file isn't loaded, or for non-GTS mods.
+  for(const r of DB){try{if(r.test(paths))return r;}catch(e){}}
+  return {name:null,verdict:'unknown'};
+}
+
+// ---- Auto-naming cascade ----
+// When the curated DB doesn't match, derive a readable name straight from the mod's own files.
+// Works on any mod, including brand-new ones — no database needed, nothing to maintain.
+function titleCase(s){return s.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim().replace(/\b\w/g,c=>c.toUpperCase());}
+function cleanJsonName(fname){return fname.replace(/\.json$/i,'').replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim();}
+
+function deriveName(paths){
+  // Returns {name, derived, confidence:'exact'|'likely'|'ambiguous', evidence:[...], searchTerm}
+  // 'exact'   — the files name the mod directly (json/plugin filename).
+  // 'likely'  — a distinctive folder strongly implies one mod.
+  // 'ambiguous' — the signature is shared by several mods; show evidence, don't fake certainty.
+
+  // 1) PBRNifPatcher\<Name>.json at top level — this filename usually IS the mod name. Exact.
+  const topJson=paths.find(p=>/^pbrnifpatcher\\[^\\]+\.json$/i.test(p));
+  if(topJson){const n=cleanJsonName(topJson.split('\\')[1]);if(n&&!/^(creationclub|landscape|architecture|clutter)$/i.test(n))return {name:n,derived:'json',confidence:'exact',searchTerm:n.replace(/ PBR.*$/i,'')};}
+
+  // 2) A plugin filename is usually the mod name. Exact-ish.
+  const espTop=paths.find(p=>/\.es[plm]$/i.test(p)&&!p.includes('\\'));
+  if(espTop){const n=espTop.replace(/\.es[plm]$/i,'');return {name:n,derived:'plugin',confidence:'exact',searchTerm:n};}
+  const espAny=paths.find(p=>/\.es[plm]$/i.test(p));
+  if(espAny){const n=espAny.split('\\').pop().replace(/\.es[plm]$/i,'');return {name:n,derived:'plugin',confidence:'exact',searchTerm:n};}
+
+  // 3) Creation Club PBR — the folder is SHARED by multiple mods, so this is ambiguous.
+  //    Surface the specific bgssse creation IDs as the distinguishing evidence.
+  if(paths.some(p=>/\\creationclub\\/i.test(p.replace(/\//g,'\\'))||/creationclub/i.test(p))){
+    const ids=new Set();
+    for(const p of paths){const m=p.toLowerCase().match(/bgssse(\d+)/g);if(m)m.forEach(x=>ids.add(x.replace('bgssse','bgssse ').replace('bgssse ','bgssse')));}
+    const idList=[...ids].map(s=>s.toUpperCase()).sort();
+    return {name:'A Creation Club PBR patch',derived:'folder',confidence:'ambiguous',
+      evidence:idList.length?['Covers CC creations: '+idList.join(', ')]:['Uses the shared creationclub folder'],
+      note:'Several different mods deploy into the Creation Club folder, so this can\'t be pinned to one from the files alone. Use the CC creation IDs below to identify which one on Nexus.',
+      searchTerm:'Creation Club PBR'};
+  }
+
+  // 4) distinctive texture\pbr subfolder.
+  const pbrSub={};
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/^textures\\pbr\\([^\\]+)\\/);if(m){pbrSub[m[1]]=(pbrSub[m[1]]||0)+1;}}
+  const subEntries=Object.entries(pbrSub).sort((a,b)=>b[1]-a[1]);
+  if(subEntries.length){
+    const folder=subEntries[0][0];
+    const generic=/^(architecture|landscape|clutter|plants|actors|weapons|armor|misc|effects|sky|interface)$/i.test(folder);
+    if(!generic)
+      return {name:titleCase(folder)+' PBR',derived:'folder',confidence:'likely',searchTerm:titleCase(folder)};
+    // generic top folder — can't name it, describe it and show the deeper folders as evidence.
+    const deeper={};
+    for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(new RegExp('^textures\\\\pbr\\\\'+folder+'\\\\([^\\\\]+)\\\\','i'));if(m)deeper[m[1]]=(deeper[m[1]]||0)+1;}
+    const dList=Object.entries(deeper).sort((a,b)=>b[1]-a[1]).slice(0,4).map(e=>e[0]);
+    return {name:'A '+titleCase(folder)+' PBR replacer',derived:'folder-generic',confidence:'ambiguous',
+      evidence:dList.length?['Mainly covers: '+dList.map(titleCase).join(', ')]:['Covers '+titleCase(folder)],
+      note:'This sits in the shared '+folder+' folder, which many mods use — so it can\'t be named from the files alone. Use the file locations below to identify it on Nexus.',
+      searchTerm:titleCase(folder)+' PBR'};
+  }
+
+  // 5) distinctive mesh folder.
+  const meshSub={};
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/^meshes\\([^\\]+)\\([^\\]+)\\/);if(m){meshSub[m[2]]=(meshSub[m[2]]||0)+1;}}
+  const mEnt=Object.entries(meshSub).sort((a,b)=>b[1]-a[1]);
+  if(mEnt.length&&!/^(architecture|landscape|clutter)$/i.test(mEnt[0][0]))
+    return {name:titleCase(mEnt[0][0])+' meshes',derived:'mesh',confidence:'likely',searchTerm:titleCase(mEnt[0][0])};
+
+  return {name:null,derived:null,confidence:null};
+}
 // PGPatcher only lists mods carrying PBR material data — textures\PBR\ or a PBRNifPatcher config.
 // Everything else (ESP-only patches, SKSE dll plugins, Community Shaders) never shows a bogus name in PG.
 function pgVisible(paths){for(const p of paths){const pl=p.toLowerCase().replace(/\//g,'\\');if(pl.startsWith('textures\\pbr\\'))return true;if(pl.startsWith('pbrnifpatcher\\'))return true;}return false;}
@@ -341,7 +464,18 @@ function analyze(json){
   const out=[];
   for(const [guid,paths] of Object.entries(groups)){
     const id=identify(paths);
-    out.push({guid,name:id.name,verdict:id.verdict,note:id.note||'',nexus:id.nexus||'',count:paths.length,folders:topFolders(paths),fingerprint:pickFingerprint(paths),inPG:pgVisible(paths)});
+    let name=id.name, verdict=id.verdict, note=id.note||'', nexus=id.nexus||'', derived=null, confidence=null, evidence=null;
+    if(!name){
+      const d=deriveName(paths);
+      if(d.name){
+        name=d.name; derived=d.derived; confidence=d.confidence; evidence=d.evidence||null;
+        if(d.note)note=d.note;
+        const term=d.searchTerm||d.name.replace(/ PBR.*$/i,'').replace(/^A /,'');
+        if(pgVisible(paths)){verdict='fixable';nexus='https://www.nexusmods.com/skyrimspecialedition/search/?gsearch='+encodeURIComponent(term);}
+        else{verdict='unknown';}
+      }
+    }
+    out.push({guid,name,verdict,note,nexus,derived,confidence,evidence,count:paths.length,folders:topFolders(paths),fingerprint:pickFingerprint(paths),inPG:pgVisible(paths)});
   }
   out.sort((a,b)=>b.count-a.count);return out;
 }
@@ -372,17 +506,32 @@ function render(){
     const el=document.createElement('div');el.className='mod '+m.verdict;
     const pill=m.verdict==='fixable'?'Fixable if coded':m.verdict==='keepguid'?'Leave as code':'Needs a look';
     const shortG=m.guid.replace(/^([0-9a-f_]{8})[0-9a-f_]*(-[0-9a-f-]+)$/i,'$1…$2');
-    let why=m.note?escapeHtml(m.note):(m.verdict==='fixable'?'A standalone Nexus mod. <b>If it\'s showing a code in your PGPatcher</b>, remove it, manual-download the zip, reinstall and deploy to resolve the name. If it already shows a proper name, leave it — nothing to do.':m.verdict==='keepguid'?'This will <b>always</b> show a code — it\'s bundled or has no Nexus archive. Nothing to fix; just know what it is.':'Couldn\'t identify this one confidently. Check the file locations below — the top folder usually gives it away.');
-    if(!m.inPG){why='<b>This mod doesn\'t appear in PGPatcher</b>, so its code name never bothers you there. You can safely ignore it. '+(m.verdict==='fixable'?'(If you want the tidy name in Vortex anyway, a manual reinstall would do it.)':'');}
+    let why=m.note?escapeHtml(m.note):(m.verdict==='fixable'?'A standalone Nexus mod. <b>If it\'s showing a code in your PGPatcher</b>, remove it, manual-download the zip, reinstall and deploy to resolve the name. If it already shows a proper name, leave it — nothing to do.':m.verdict==='keepguid'?'This will <b>always</b> show a code — it\'s bundled or has no Nexus archive. Nothing to fix; just know what it is.':'Check the file locations below to confirm what this is.');
+    if(m.derived&&m.confidence==='ambiguous'){
+      why='<b>Can\'t pin this to one mod from the files.</b> '+(m.note?escapeHtml(m.note):'')+' Use the evidence below to find the exact mod on Nexus.';
+    }else if(m.derived&&m.confidence==='likely'){
+      why='<b>Likely name, auto-detected</b> from this mod\'s folder — probably right, but confirm against Nexus. '+(m.inPG?'If it\'s showing a code in PGPatcher, a manual reinstall fixes the name.':'Doesn\'t show in PGPatcher, so you can ignore its code.');
+    }else if(m.derived){
+      why='<b>Auto-detected name</b> — read directly from this mod\'s own files, so it should match. '+(m.inPG?'If it\'s showing a code in PGPatcher, a manual reinstall from Nexus fixes the name.':'Doesn\'t show in PGPatcher, so you can ignore its code.');
+    }else if(!m.inPG){why='<b>This mod doesn\'t appear in PGPatcher</b>, so its code name never bothers you there. You can safely ignore it. '+(m.verdict==='fixable'?'(If you want the tidy name in Vortex anyway, a manual reinstall would do it.)':'');}
+    const displayName=m.name?escapeHtml(m.name):'Unnamed mod — see file locations';
+    // confidence badge: curated (none) / exact / likely / ambiguous
+    let autoTag='';
+    if(m.confidence==='exact')autoTag='<span class="auto exact">auto · exact</span>';
+    else if(m.confidence==='likely')autoTag='<span class="auto likely">auto · likely</span>';
+    else if(m.confidence==='ambiguous')autoTag='<span class="auto amb">needs confirming</span>';
+    else if(m.derived)autoTag='<span class="auto">auto</span>';
+    const evidenceHtml=(m.evidence&&m.evidence.length)?`<div class="evidence"><span class="ev-h">Identifying evidence</span>${m.evidence.map(e=>`<div class="ev-row">${escapeHtml(e)}</div>`).join('')}</div>`:'';
     el.innerHTML=`
       <div class="mod-head">
         <span class="dot"></span>
-        <div class="mod-name">${m.name?escapeHtml(m.name):'Unidentified GUID mod'}<span class="guid">${escapeHtml(shortG)}</span></div>
+        <div class="mod-name">${displayName}${autoTag}<span class="guid">${escapeHtml(shortG)}</span></div>
         <div class="mod-meta">${m.inPG?'':'<span class="ghost">not in PG</span>'}<span class="pill">${pill}</span><span>${m.count} files</span><span class="chev">▶</span></div>
       </div>
       <div class="mod-body">
         <p class="why">${why}</p>
-        ${m.nexus?`<a class="link" href="${m.nexus}" target="_blank" rel="noopener">◈ Find on Nexus →</a>`:''}
+        ${evidenceHtml}
+        ${m.nexus?`<a class="link" href="${m.nexus}" target="_blank" rel="noopener">◈ ${m.derived?'Search Nexus':'Find on Nexus'} →</a>`:''}
         ${m.fingerprint?`<p class="fp"><span>matched on · </span>${escapeHtml(m.fingerprint)}</p>`:''}
         <p class="paths-h">Top file locations</p>
         <div class="paths">${m.folders.map(f=>`<div class="row"><span class="cnt">${f[1]}</span><span>${escapeHtml(f[0])}</span></div>`).join('')}</div>
@@ -426,6 +575,9 @@ $('#file').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.targe
 forge.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleFile(f);});
 $('#filterSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#filterSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');currentFilter=b.dataset.f;render();});
 $('#search').addEventListener('input',e=>{currentSearch=e.target.value;render();});
+
+// Load the current GTS revision data on startup (graceful if absent).
+loadGtsDb();
 </script>
 </body>
 </html>
