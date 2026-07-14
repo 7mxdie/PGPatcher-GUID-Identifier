@@ -1,6 +1,6 @@
 {
-  "revision": "54",
-  "updated": "2026-07-05",
+  "revision": null,
+  "updated": "2026-07-14",
   "mods": [
     {
       "name": "3D Whiterun Trellis - Complex Material and PBR",
@@ -19,27 +19,11 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/129928"
     },
     {
-      "name": "Addi's Atronachs",
+      "name": "Akaviri Katana - PBR 184779 1 2026-07-08T23-51Z QRde31EEy",
       "verdict": "fixable",
       "sig": {
-        "pathContains": "actors"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/170163"
-    },
-    {
-      "name": "Alternative_Armors_Redone_PBR_(4K)_1.0.0_Ks18n0ucN",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "weapons"
+        "pbrFolder": "billyro"
       }
-    },
-    {
-      "name": "aMidianBorn Armors PBR 4k",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/159035"
     },
     {
       "name": "Ancestor Glade Tree PBR",
@@ -109,7 +93,7 @@
       "name": "Beyond Skyrim - Assets PBR",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "Beyond Skyrim - Assets PBR.json"
+        "pbrNifJson": "Beyond Skyrim - Assets PBR - landscape.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/158330"
     },
@@ -264,36 +248,12 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/133471"
     },
     {
-      "name": "Chrysamere - PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/175824"
-    },
-    {
       "name": "Colovian Prince Set - PBR",
       "verdict": "fixable",
       "sig": {
         "pbrNifJson": "Colovian Prince Set PBR.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147695"
-    },
-    {
-      "name": "Complex Silverware PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/131693"
-    },
-    {
-      "name": "Copper Ware With A Cow  PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "dungeons"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/180867"
     },
     {
       "name": "Crows and Ravens PBR",
@@ -320,20 +280,12 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
     {
-      "name": "Dawnfang PBR",
+      "name": "Darker Dirt02 - Rocks and Moss show more",
       "verdict": "fixable",
       "sig": {
-        "pbrFolder": "creationclub"
+        "pbrNifJson": "Octos Dirt02.json"
       },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/174945"
-    },
-    {
-      "name": "Detailed Rugs PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
+      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/170261"
     },
     {
       "name": "Dev Aveza PBR - 4K",
@@ -366,38 +318,6 @@
         "pbrFolder": "sdlutz custom fences"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/166595"
-    },
-    {
-      "name": "Diverse HQ PBR shrubs",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "plants"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/154489"
-    },
-    {
-      "name": "Diverse HQ PBR shrubs - Seasons pack",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "plants"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/154489"
-    },
-    {
-      "name": "Divine Crusader PBR Redone - 4K",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/175371"
-    },
-    {
-      "name": "Draugrs - PBR 4K",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "actors"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/172664"
     },
     {
       "name": "East Empire Company Armor - PBR",
@@ -480,14 +400,6 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/175319"
     },
     {
-      "name": "Faultier's PBR Armors and Clothes - USSEP patch",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/175319"
-    },
-    {
       "name": "Faultier's PBR blue palace terrace",
       "verdict": "fixable",
       "sig": {
@@ -507,7 +419,7 @@
       "name": "Faultier's PBR Landscapes 2k",
       "verdict": "fixable",
       "sig": {
-        "pbrFolder": "landscape"
+        "pbrFolder": "_byoh"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/125308"
     },
@@ -523,7 +435,7 @@
       "name": "Faultier's PBR Skyrim AIO 2k",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "Faultier's PBR 1orc architecture.json"
+        "pbrNifJson": "Faultier's PBR College of Winterhold.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/125308"
     },
@@ -571,7 +483,7 @@
       "name": "Frankly HD - PBR Remaster",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "Borx_FranklyHD_PBR_Dawnguard.json"
+        "pbrNifJson": "Borx_FranklyHD_PBR_Blades.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/155958"
     },
@@ -632,30 +544,6 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/150727"
     },
     {
-      "name": "Godsblood - Armor Weapons and Clutter PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/173891"
-    },
-    {
-      "name": "Goldbrand PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/179476"
-    },
-    {
-      "name": "Green Thumb - Lush Cities of Skyrim",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/149515"
-    },
-    {
       "name": "GTS - PBR VO - Nirn Necessities PBR Fixes",
       "verdict": "fixable",
       "sig": {
@@ -688,36 +576,12 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/129150"
     },
     {
-      "name": "High Poly Sweet Rolls PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/175551"
-    },
-    {
       "name": "High Quality PBR Ivy",
       "verdict": "fixable",
       "sig": {
         "pbrNifJson": "PBRIvy.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/129934"
-    },
-    {
-      "name": "Iconic Dragon PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
-    },
-    {
-      "name": "Illusive Infiltrator Armor PBR 4K",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/158688"
     },
     {
       "name": "Immersive Laundry PBRed",
@@ -776,22 +640,6 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/157866"
     },
     {
-      "name": "Kanjs   Nordic Puzzle Door Animated PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/179614"
-    },
-    {
-      "name": "Kanjs   Spell Tomes Animated PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/180232"
-    },
-    {
       "name": "Kanjs - Nests and Eggs PBRed",
       "verdict": "fixable",
       "sig": {
@@ -848,41 +696,17 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147695"
     },
     {
-      "name": "Lord's Mail PBR 4k 184219 1 8gJHT4jXj",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      }
-    },
-    {
-      "name": "Lore Friendly Thalmor Banners PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/180898"
-    },
-    {
-      "name": "Lunar Guard Armor - Default - PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/162358"
-    },
-    {
-      "name": "Medieval Farmhouses - PBR - 2k",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/180839"
-    },
-    {
       "name": "Medieval Silverworks PBR & Complex Material Hub",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "s3dmisc"
+      }
+    },
+    {
+      "name": "Meridia's Luxon Beacon - PBR - Teal 148175 2.0 2026-07-10T01-08Z zYsEpQtvo",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "artsick"
       }
     },
     {
@@ -910,13 +734,6 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/155815"
     },
     {
-      "name": "Moon Monk's Robes   PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      }
-    },
-    {
       "name": "More Cow Variants PBR",
       "verdict": "fixable",
       "sig": {
@@ -931,14 +748,6 @@
         "pbrFolder": "evgnnsmp"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/135807"
-    },
-    {
-      "name": "Nordic Jewelry PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/179715"
     },
     {
       "name": "Nordic Runestones Remade PBR 4k",
@@ -968,7 +777,7 @@
       "name": "Octo's Atmoran Stonework Dungeon Mountains Caves",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "AtmoranMountainHomes.json"
+        "pbrNifJson": "Atmoran Stone Caves.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/163385"
     },
@@ -1013,7 +822,7 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/167174"
     },
     {
-      "name": "PBR Northern Roads 183868 0.1.0 vlGiB9WyE",
+      "name": "PBR Northern Roads 183868 0.3.1 2026-07-11T22-06Z FpnkHZPQr",
       "verdict": "fixable",
       "sig": {
         "pbrNifJson": "OctosPBRNorthernRoads.json"
@@ -1052,34 +861,10 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/174569"
     },
     {
-      "name": "Pilgrim HD - PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/143257"
-    },
-    {
       "name": "Praedy's Apocrypha - PBR",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "praedythxvi"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
-    },
-    {
-      "name": "Praedy's Castle Volkihar - PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "dlc01"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
-    },
-    {
-      "name": "Praedy's Chantry of Auriel - PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "dlc01"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
@@ -1108,28 +893,12 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
     {
-      "name": "Praedys College of Winterhold PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
-    },
-    {
       "name": "Praedys Skeleton Replacer HD PBR",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "praedythxvi"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
-    },
-    {
-      "name": "Realistic PBR Footprints",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "actors"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/140780"
     },
     {
       "name": "Redguard Elite Armaments PBR 2K",
@@ -1220,18 +989,17 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/133471"
     },
     {
-      "name": "Skyking Misc PBR",
+      "name": "Skyrim 3D Furniture PBR & Complex Material Hub 182471 1.0 2026-07-09T08-59Z kATsMWuYq",
       "verdict": "fixable",
       "sig": {
-        "pathContains": "clutter"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/143209"
+        "pbrFolder": "s3dfurniture"
+      }
     },
     {
-      "name": "Skyrim 3D Rocks   PBR & Complex Material Hub",
+      "name": "Skyrim 3D Misc PBR & Complex Material Hub 182471 1.0 2026-07-06T12-38Z UK35XnN4C",
       "verdict": "fixable",
       "sig": {
-        "pathContains": "landscape"
+        "pbrFolder": "s3dmisc"
       }
     },
     {
@@ -1249,14 +1017,6 @@
         "pbrFolder": "nordwar"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/137807"
-    },
-    {
-      "name": "Spell Knight Armor Redone PBR (4K)",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/174971"
     },
     {
       "name": "Statue of Kynareth PBR",
@@ -1283,28 +1043,12 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/154107"
     },
     {
-      "name": "Stony AF Markarth PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/127407"
-    },
-    {
       "name": "Sunder and Wraithguard PBR 2K",
       "verdict": "fixable",
       "sig": {
         "pbrNifJson": "sunderandwraithguard.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/169212"
-    },
-    {
-      "name": "The Southbound Scouts PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
     {
       "name": "TMD The Rift Leaves PBR 2k",
@@ -1323,20 +1067,6 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
     {
-      "name": "Tomato's PBR Solitude - Darker interior stone",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "architecture"
-      }
-    },
-    {
-      "name": "Tomato's PBR Solitude - Faultier's Windows Patch",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "architecture"
-      }
-    },
-    {
       "name": "Tomato's PBR Solitude - Remastered 2k",
       "verdict": "fixable",
       "sig": {
@@ -1353,14 +1083,6 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/157340"
     },
     {
-      "name": "Tomato's Windhelm PBR - 2K",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "architecture"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/174492"
-    },
-    {
       "name": "TomatoRim PBR - ECSS Landscapes",
       "verdict": "fixable",
       "sig": {
@@ -1375,30 +1097,6 @@
         "pbrNifJson": "TMage_belts_dif.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147682"
-    },
-    {
-      "name": "Umbra PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pbrFolder": "creationclub"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/179779"
-    },
-    {
-      "name": "ValArt Hipoly Clover (SE)   Seasonal Patch PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "landscape"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/175588"
-    },
-    {
-      "name": "VIGILANT - Divine Crusader PBR",
-      "verdict": "fixable",
-      "sig": {
-        "pathContains": "armor"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/179340"
     },
     {
       "name": "WeldingMans Enchanting Table Variants PBR",
