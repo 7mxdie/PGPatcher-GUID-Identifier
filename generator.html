@@ -108,20 +108,24 @@ function pgRelevant(paths){
   return paths.some(p=>{const pl=p.toLowerCase();return pl.startsWith('textures\\pbr\\')||pl.startsWith('pbrnifpatcher\\');});
 }
 // Build the best fingerprint for a mod, preferring the most specific/stable signal.
+// Never falls back to a shared/generic folder (architecture, smim, etc.) as a sole signal —
+// a false match is worse than no match, so an ambiguous mod is left out of the curated list
+// and handled honestly by the auto-naming cascade instead.
+const GENERIC_FOLDERS=/^(architecture|landscape|clutter|plants|actors|weapons|armor|misc|creationclub|effects|sky|interface|smim|dlc01|dlc02|dlc03|dungeons|dyndolod|meshes)$/i;
 function buildSig(paths){
   // 1) top-level PBRNifPatcher json — most stable, often the exact name
   const topJson=paths.find(p=>/^pbrnifpatcher\\[^\\]+\.json$/i.test(p));
   if(topJson)return {pbrNifJson:topJson.split('\\')[1]};
-  // 2) distinctive PBR subfolder (skip generic ones that many mods share)
+  // 2) distinctive PBR subfolder — try each candidate in order of frequency, skipping shared ones
   const subs={};
   for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/^textures\\pbr\\([^\\]+)\\/);if(m)subs[m[1]]=(subs[m[1]]||0)+1;}
-  const best=Object.entries(subs).sort((a,b)=>b[1]-a[1])[0];
-  if(best&&!/^(architecture|landscape|clutter|plants|actors|weapons|armor|misc|creationclub|effects|sky|interface)$/i.test(best[0]))
-    return {pbrFolder:best[0]};
-  // 3) a distinctive path fragment: pick the longest unusual folder segment under pbr
-  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/pbrnifpatcher\\([^\\]+)\\/);if(m&&!/^creationclub$/i.test(m[1]))return {pathContains:m[1]};}
-  // 4) fall back to the dominant generic folder as a pathContains (weak but better than nothing)
-  if(best)return {pbrFolder:best[0]};
+  const ranked=Object.entries(subs).sort((a,b)=>b[1]-a[1]);
+  const distinctive=ranked.find(([folder])=>!GENERIC_FOLDERS.test(folder));
+  if(distinctive)return {pbrFolder:distinctive[0]};
+  // 3) a distinctive path fragment under a nested PBRNifPatcher folder
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/pbrnifpatcher\\([^\\]+)\\/);if(m&&!GENERIC_FOLDERS.test(m[1]))return {pathContains:m[1]};}
+  // 4) nothing safe to fingerprint on — skip this mod rather than risk a false match.
+  //    It'll still get an honest "likely/ambiguous" auto-detected label in the tool itself.
   return null;
 }
 

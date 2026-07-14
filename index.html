@@ -430,7 +430,7 @@ function deriveName(paths){
   const subEntries=Object.entries(pbrSub).sort((a,b)=>b[1]-a[1]);
   if(subEntries.length){
     const folder=subEntries[0][0];
-    const generic=/^(architecture|landscape|clutter|plants|actors|weapons|armor|misc|effects|sky|interface)$/i.test(folder);
+    const generic=/^(architecture|landscape|clutter|plants|actors|weapons|armor|misc|effects|sky|interface|smim|dlc01|dlc02|dlc03|dungeons|dyndolod)$/i.test(folder);
     if(!generic)
       return {name:titleCase(folder)+' PBR',derived:'folder',confidence:'likely',searchTerm:titleCase(folder)};
     // generic top folder — can't name it, describe it and show the deeper folders as evidence.
