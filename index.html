@@ -138,6 +138,7 @@
   .fixable .pill{background:rgba(116,160,92,.14);color:var(--moss-solid);border:1px solid rgba(116,160,92,.32)}
   .keepguid .pill{background:rgba(211,87,65,.12);color:var(--ember-solid);border:1px solid rgba(211,87,65,.3)}
   .unknown .pill{background:rgba(141,151,166,.1);color:var(--ash);border:1px solid var(--line)}
+  .variant{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--rune);border:1px solid rgba(203,162,77,.4);background:rgba(203,162,77,.08);border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:middle;font-weight:600;white-space:nowrap}
   .auto{display:inline-block;font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--frost);border:1px solid rgba(99,182,199,.35);border-radius:4px;padding:2px 5px;margin-left:8px;vertical-align:middle;font-weight:400;white-space:nowrap}
   .auto.exact{color:var(--moss-solid);border-color:rgba(116,160,92,.4)}
   .auto.likely{color:var(--rune);border-color:rgba(203,162,77,.4)}
@@ -458,6 +459,35 @@ function pgVisible(paths){for(const p of paths){const pl=p.toLowerCase().replace
 function topFolders(paths,k=6){const m={};for(const p of paths){const parts=p.split('\\');const key=parts.length>=3?parts.slice(0,3).join('\\'):p;m[key]=(m[key]||0)+1;}return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,k);}
 function pickFingerprint(paths){const j=paths.find(p=>/^pbrnifpatcher\\[^\\]+\.json$/i.test(p));if(j)return'PBRNifPatcher json: '+j.split('\\')[1];const e=paths.find(p=>/\.esp$/i.test(p));if(e)return'plugin: '+e.split('\\').pop();return null;}
 
+// When a Nexus mod page ships several separate downloadable files under the same title,
+// each becomes its own Vortex mod entry — same name, different content. Find what actually
+// distinguishes them so people know which specific download each entry is.
+function distinguishingBit(paths){
+  // Prefer a nested PBRNifPatcher subfolder two levels deep (e.g. S3DMisc\dining set, S3DMisc\silver)
+  const nested={};
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/^pbrnifpatcher\\[^\\]+\\([^\\]+)\\/);if(m)nested[m[1]]=(nested[m[1]]||0)+1;}
+  const nBest=Object.entries(nested).sort((a,b)=>b[1]-a[1])[0];
+  if(nBest&&!/^(bgssse\d+)$/i.test(nBest[0]))return titleCase(nBest[0]);
+  // Otherwise a second-level PBR texture folder, if it's not the shared top one
+  const subs={};
+  for(const p of paths){const m=p.toLowerCase().replace(/\//g,'\\').match(/^textures\\pbr\\[^\\]+\\([^\\]+)\\/);if(m)subs[m[1]]=(subs[m[1]]||0)+1;}
+  const sBest=Object.entries(subs).sort((a,b)=>b[1]-a[1])[0];
+  if(sBest)return titleCase(sBest[0]);
+  return null;
+}
+function disambiguateDuplicates(out,groups){
+  const byName={};
+  for(const m of out){if(m.name)(byName[m.name]=byName[m.name]||[]).push(m);}
+  for(const list of Object.values(byName)){
+    if(list.length<2)continue;
+    for(const m of list){
+      m.multiPart=true;
+      const bit=distinguishingBit(groups[m.guid]);
+      m.variant=bit||('Part covering '+m.count+' files');
+    }
+  }
+}
+
 function analyze(json){
   const files=json.files||[];const groups={};
   for(const e of files){if(e&&typeof e.source==='string'&&GUID_RE.test(e.source)){(groups[e.source]=groups[e.source]||[]).push(e.relPath);}}
@@ -477,6 +507,7 @@ function analyze(json){
     }
     out.push({guid,name,verdict,note,nexus,derived,confidence,evidence,count:paths.length,folders:topFolders(paths),fingerprint:pickFingerprint(paths),inPG:pgVisible(paths)});
   }
+  disambiguateDuplicates(out,groups);
   out.sort((a,b)=>b.count-a.count);return out;
 }
 
@@ -514,7 +545,9 @@ function render(){
     }else if(m.derived){
       why='<b>Auto-detected name</b> — read directly from this mod\'s own files, so it should match. '+(m.inPG?'If it\'s showing a code in PGPatcher, a manual reinstall from Nexus fixes the name.':'Doesn\'t show in PGPatcher, so you can ignore its code.');
     }else if(!m.inPG){why='<b>This mod doesn\'t appear in PGPatcher</b>, so its code name never bothers you there. You can safely ignore it. '+(m.verdict==='fixable'?'(If you want the tidy name in Vortex anyway, a manual reinstall would do it.)':'');}
+    if(m.multiPart){why+=' <b>This Nexus page ships multiple separate downloadable files</b> under the same title — this entry is the one covering roughly: <b>'+escapeHtml(m.variant)+'</b>. It\'s not a duplicate; each part needs to be installed for the mod to be complete.';}
     const displayName=m.name?escapeHtml(m.name):'Unnamed mod — see file locations';
+    const variantTag=m.multiPart?`<span class="variant">${escapeHtml(m.variant)}</span>`:'';
     // confidence badge: curated (none) / exact / likely / ambiguous
     let autoTag='';
     if(m.confidence==='exact')autoTag='<span class="auto exact">auto · exact</span>';
@@ -525,7 +558,7 @@ function render(){
     el.innerHTML=`
       <div class="mod-head">
         <span class="dot"></span>
-        <div class="mod-name">${displayName}${autoTag}<span class="guid">${escapeHtml(shortG)}</span></div>
+        <div class="mod-name">${displayName}${variantTag}${autoTag}<span class="guid">${escapeHtml(shortG)}</span></div>
         <div class="mod-meta">${m.inPG?'':'<span class="ghost">not in PG</span>'}<span class="pill">${pill}</span><span>${m.count} files</span><span class="chev">▶</span></div>
       </div>
       <div class="mod-body">
