@@ -89,6 +89,7 @@
 <script>
 const $=s=>document.querySelector(s);
 let RESULT='';
+let LAST_JSON=null; // the last successfully parsed deployment file, so revision changes can re-stamp without re-dropping
 
 // A named source looks like: ModName-{nexusID}-{version}-{timestamp}
 // Strip from the trailing -{digits}-... group onward to get a clean name.
@@ -154,20 +155,30 @@ function analyze(json,revision){
   return {out,stats:{total:dedup.length,skippedGuid,skippedIrrelevant}};
 }
 
+function stamp(out,stats,rev){
+  RESULT=JSON.stringify(out,null,2);
+  $('#output').value=RESULT;
+  $('#summary').innerHTML=`Built <b>${stats.total}</b> mod entries`+(rev?` for <b>Revision ${escapeHtml(rev)}</b>`:` <span style="color:var(--rune)">(no revision number set — add one above to label it)</span>`)+`. <span style="color:var(--ash-dim)">(${stats.skippedIrrelevant} non-PBR skipped${stats.skippedGuid?', '+stats.skippedGuid+' coded skipped':''})</span>`;
+  $('#out').classList.add('show');
+}
+function rebuild(){
+  if(!LAST_JSON)return;
+  const rev=$('#rev').value.trim();
+  const {out,stats}=analyze(LAST_JSON,rev);
+  stamp(out,stats,rev);
+}
 function run(file){
   $('#err').classList.remove('show');
-  const rev=$('#rev').value.trim();
   const reader=new FileReader();
   reader.onload=()=>{
     let json;
     try{json=JSON.parse(reader.result);}catch(e){return fail('That file is not valid JSON.');}
     if(!json.files){return fail('No <b>files</b> list — is this a vortex.deployment.json?');}
+    const rev=$('#rev').value.trim();
     const {out,stats}=analyze(json,rev);
     if(!stats.total)return fail('No PBR mods found to index. Is this the right file?');
-    RESULT=JSON.stringify(out,null,2);
-    $('#output').value=RESULT;
-    $('#summary').innerHTML=`Built <b>${stats.total}</b> mod entries`+(rev?` for <b>Revision ${escapeHtml(rev)}</b>`:'')+`. <span style="color:var(--ash-dim)">(${stats.skippedIrrelevant} non-PBR skipped${stats.skippedGuid?', '+stats.skippedGuid+' coded skipped':''})</span>`;
-    $('#out').classList.add('show');
+    LAST_JSON=json; // cache so the revision field can re-stamp later without re-dropping the file
+    stamp(out,stats,rev);
   };
   reader.onerror=()=>fail('Could not read that file.');
   reader.readAsText(file);
@@ -180,6 +191,9 @@ $('#file').addEventListener('change',e=>{if(e.target.files[0])run(e.target.files
 ['dragenter','dragover'].forEach(ev=>forge.addEventListener(ev,e=>{e.preventDefault();forge.classList.add('hot');}));
 ['dragleave','drop'].forEach(ev=>forge.addEventListener(ev,e=>{e.preventDefault();forge.classList.remove('hot');}));
 forge.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)run(f);});
+// Typing/changing the revision after the file's already processed re-stamps the existing output —
+// no need to re-drop the file just because the number was set second.
+$('#rev').addEventListener('input',rebuild);
 $('#copyBtn').addEventListener('click',()=>{navigator.clipboard.writeText(RESULT).then(()=>{$('#copyBtn').textContent='Copied ✓';setTimeout(()=>$('#copyBtn').textContent='Copy to clipboard',1500);});});
 $('#dlBtn').addEventListener('click',()=>{const b=new Blob([RESULT],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='gts-mods.json';a.click();URL.revokeObjectURL(u);});
 </script>
