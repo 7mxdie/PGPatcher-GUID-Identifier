@@ -1,6 +1,6 @@
 {
   "revision": "56",
-  "updated": "2026-07-14",
+  "updated": "2026-07-15",
   "mods": [
     {
       "name": "3D Whiterun Trellis - Complex Material and PBR",
@@ -254,6 +254,13 @@
         "pbrNifJson": "Colovian Prince Set PBR.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147695"
+    },
+    {
+      "name": "Crown Plate Set - PBR 147695 1.0.PBR 2026-07-14T05-01Z UK35Xnzda",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "pulcharmsolis"
+      }
     },
     {
       "name": "Crows and Ravens PBR",
@@ -584,6 +591,13 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/129934"
     },
     {
+      "name": "Horse Armor - PBR 4k 185326 1 2026-07-14T04-52Z yIjvuhnUL",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "horsearmor.json"
+      }
+    },
+    {
       "name": "Immersive Laundry PBRed",
       "verdict": "fixable",
       "sig": {
@@ -909,6 +923,13 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/170672"
     },
     {
+      "name": "Rihad Swordsman Set - PBR 147695 1.0.PBR 2026-07-14T03-33Z 587RqTEaK",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "pulcharmsolis"
+      }
+    },
+    {
       "name": "Ring-necked Pheasants PBR",
       "verdict": "fixable",
       "sig": {
@@ -987,6 +1008,13 @@
         "pbrNifJson": "SewerRatsPBR.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/133471"
+    },
+    {
+      "name": "Skyrim 3D Blacksmith PBR And Complex Material Hub 182471 1.0 2026-07-12T04-14Z IoFlhf0zl",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "s3dmisc"
+      }
     },
     {
       "name": "Skyrim 3D Furniture PBR & Complex Material Hub 182471 1.0 2026-07-09T08-59Z kATsMWuYq",
@@ -1078,7 +1106,7 @@
       "name": "Tomato's Riften PBR - 2k",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "PBR Riften Ratway.json"
+        "pbrNifJson": "PBR Riften.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/157340"
     },
