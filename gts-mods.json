@@ -1,6 +1,6 @@
 {
-  "revision": "56",
-  "updated": "2026-07-15",
+  "revision": "60",
+  "updated": "2026-09-06",
   "mods": [
     {
       "name": "3D Whiterun Trellis - Complex Material and PBR",
@@ -114,6 +114,13 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/133471"
     },
     {
+      "name": "Bittercup - Redone PBR 4k 189863 1 2026-08-28T07-05Z N2AYL5IxW",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "Bittercup.json"
+      }
+    },
+    {
       "name": "Blacksmith Signs 2k - PBR",
       "verdict": "fixable",
       "sig": {
@@ -224,6 +231,14 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/68310"
     },
     {
+      "name": "Cathedral - 3D Pine Shrubs - Fixes and Tweaks",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "PineShrubs.json"
+      },
+      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/178916"
+    },
+    {
       "name": "Cathedral PBR plants",
       "verdict": "fixable",
       "sig": {
@@ -279,12 +294,11 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/167663"
     },
     {
-      "name": "Daedric Shrines PBR",
+      "name": "Daedric Shrines PBR (4K) 186034 1.0.0 2026-07-21T07-55Z L5WQbquWH",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "man_clavicus"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
+      }
     },
     {
       "name": "Darker Dirt02 - Rocks and Moss show more",
@@ -303,12 +317,11 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/165845"
     },
     {
-      "name": "Dibella Statue PBR",
+      "name": "Dibella Statue PBR (4K) 186050 1.0.0 2026-07-21T11-58Z Dc5uGka5C",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "man_dibella"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
+      }
     },
     {
       "name": "Diverse Dark Elf Lanterns - PBR",
@@ -327,6 +340,13 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/166595"
     },
     {
+      "name": "Divine Crusader Redone PBR 4k 175371 1 2026-07-24T01-59Z 587RqThPe",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "DivineCrusader.json"
+      }
+    },
+    {
       "name": "East Empire Company Armor - PBR",
       "verdict": "fixable",
       "sig": {
@@ -335,12 +355,11 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147446"
     },
     {
-      "name": "Embers XD PBR",
+      "name": "Embers XD PBR 186037 1.0.0 2026-07-21T09-36Z xDLPwGdLX",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "embershd"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
+      }
     },
     {
       "name": "Exist's Caves PBR - 2k",
@@ -442,7 +461,7 @@
       "name": "Faultier's PBR Skyrim AIO 2k",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "Faultier's PBR College of Winterhold.json"
+        "pbrNifJson": "Faultier's PBR aaSovngarde.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/125308"
     },
@@ -490,7 +509,7 @@
       "name": "Frankly HD - PBR Remaster",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "Borx_FranklyHD_PBR_Blades.json"
+        "pbrNifJson": "Borx_FranklyHD_PBR_Dawnguard.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/155958"
     },
@@ -509,6 +528,13 @@
         "pbrFolder": "mihail monsters and animals"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/158943"
+    },
+    {
+      "name": "Fur Lined Steel Armor - PBR 188514 1.1.1 2026-08-15T21-05Z tSBIcEWBS",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "xavbio"
+      }
     },
     {
       "name": "Fuse00 Helga   PBR",
@@ -551,6 +577,41 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/150727"
     },
     {
+      "name": "Goldbrand - Redone PBR 188316 1 2026-08-14T18-34Z IoFlhfdux",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "Goldbrand.json"
+      }
+    },
+    {
+      "name": "Gryphonknight Regalia - PBR 4k 107437 1 2026-07-22T16-08Z s6Og0dwvg",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "Gryphonknight_Regalia_PBR.json"
+      }
+    },
+    {
+      "name": "GTS - PBR VO - Dwemer Armor PBR Patch 167174 1.1 2026-08-30T23-25Z s6Og0dUd9",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "Dwemer Armor PBR Patch.json"
+      }
+    },
+    {
+      "name": "GTS - PBR VO - HDT SMP Infantry Armor PBR Patch 167174 1.1 2026-08-30T23-25Z MWx0rvevQ",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "HDT-SMP Infantry Armor PBR Patch.json"
+      }
+    },
+    {
+      "name": "GTS - PBR VO - HDT SMP Silver Armor PBR Patch 167174 1.1 2026-08-30T23-24Z 587RqT9TE",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "HDT-SMP Silver Armor PBR Patch.json"
+      }
+    },
+    {
       "name": "GTS - PBR VO - Nirn Necessities PBR Fixes",
       "verdict": "fixable",
       "sig": {
@@ -581,6 +642,13 @@
         "pbrNifJson": "HappyPBRTrees.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/129150"
+    },
+    {
+      "name": "High Quality Hearth 3D Farmhouse Firepit PBR 190237 1.1 2026-09-04T06-35Z bqv3tS8eR",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "fadingsignal"
+      }
     },
     {
       "name": "High Quality PBR Ivy",
@@ -710,6 +778,28 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147695"
     },
     {
+      "name": "LegacyOfTheNorth",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "Legacy of the North.json"
+      }
+    },
+    {
+      "name": "LM's Fuse Armor Camarilla Retex PBR",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "fuse00"
+      },
+      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/167360"
+    },
+    {
+      "name": "Medieval Candlehorns and Sconces PBR and CM Hub 182471 1.0 2026-07-20T08-50Z rvwm2B3uT",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "s3dmisc"
+      }
+    },
+    {
       "name": "Medieval Silverworks PBR & Complex Material Hub",
       "verdict": "fixable",
       "sig": {
@@ -780,20 +870,11 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/127188"
     },
     {
-      "name": "NordwarUA Legions PBR",
+      "name": "NordwarUA Legions PBR 137994 1.3.0 2026-08-11T19-09Z CmfxYjT1c",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "1_soldier_replacer"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/137994"
-    },
-    {
-      "name": "Octo's Atmoran Stonework Dungeon Mountains Caves",
-      "verdict": "fixable",
-      "sig": {
-        "pbrNifJson": "Atmoran Stone Caves.json"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/163385"
+      }
     },
     {
       "name": "Octo's Mountains",
@@ -810,6 +891,13 @@
         "pbrNifJson": "Octos Whiterun Tundra.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/171653"
+    },
+    {
+      "name": "Paladin Melus Armor - PBR - Full Res 190183 1 2026-08-30T22-45Z vlGiB9J9s",
+      "verdict": "fixable",
+      "sig": {
+        "pathContains": "vigcgt"
+      }
     },
     {
       "name": "PBR Flora Overhaul",
@@ -836,10 +924,17 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/167174"
     },
     {
-      "name": "PBR Northern Roads 183868 0.3.1 2026-07-11T22-06Z FpnkHZPQr",
+      "name": "PBR Fur Armors",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "OctosPBRNorthernRoads.json"
+        "pbrNifJson": "furShellArmors.json"
+      }
+    },
+    {
+      "name": "PBR Northern Roads 183868 0.3.4 2026-07-25T03-34Z QRde31Bha",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "Cobblestone Dirt Road.json"
       }
     },
     {
@@ -915,12 +1010,11 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
     {
-      "name": "Redguard Elite Armaments PBR 2K",
+      "name": "Redguard Elite Armaments - Redone PBR 189288 1 2026-08-24T00-42Z n0oTCmexu",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "RedguardEliteArmaments.json"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/170672"
+        "pbrNifJson": "RedguardElite.json"
+      }
     },
     {
       "name": "Rihad Swordsman Set - PBR 147695 1.0.PBR 2026-07-14T03-33Z 587RqTEaK",
@@ -1031,6 +1125,13 @@
       }
     },
     {
+      "name": "Smelters Of Skyrim - PBR 187203 1.3 2026-08-09T20-44Z gbrZ4tpuh",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "smelter.json"
+      }
+    },
+    {
       "name": "Solitude Temple Frescoes - PBR",
       "verdict": "fixable",
       "sig": {
@@ -1047,20 +1148,18 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/137807"
     },
     {
-      "name": "Statue of Kynareth PBR",
+      "name": "Statue Of Kynareth PBR (4K) 186052 1.0.0 2026-07-21T12-10Z aChSzYMhJ",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "man_kynareth"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
+      }
     },
     {
-      "name": "Statue of Mara PBR",
+      "name": "Statue Of Mara PBR (4K) 186053 1.0.0 2026-07-21T12-16Z oPpNfU4kP",
       "verdict": "fixable",
       "sig": {
         "pbrFolder": "man_mara"
-      },
-      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
+      }
     },
     {
       "name": "Steel Plate Armors PBR - 4K",
@@ -1095,6 +1194,14 @@
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/139889"
     },
     {
+      "name": "Tomato's PBR Farmhouse - Brown - 2K",
+      "verdict": "fixable",
+      "sig": {
+        "pbrNifJson": "PBR Architecture Farmhouse.json"
+      },
+      "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/135774"
+    },
+    {
       "name": "Tomato's PBR Solitude - Remastered 2k",
       "verdict": "fixable",
       "sig": {
@@ -1106,7 +1213,7 @@
       "name": "Tomato's Riften PBR - 2k",
       "verdict": "fixable",
       "sig": {
-        "pbrNifJson": "PBR Riften.json"
+        "pbrNifJson": "PBR Riften Ratway.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/157340"
     },
@@ -1125,6 +1232,13 @@
         "pbrNifJson": "TMage_belts_dif.json"
       },
       "nexus": "https://www.nexusmods.com/skyrimspecialedition/mods/147682"
+    },
+    {
+      "name": "Updated _p Texture (For Teal) 148175 1 2026-07-12T14-16Z Ae46W7Bqt",
+      "verdict": "fixable",
+      "sig": {
+        "pbrFolder": "artsick"
+      }
     },
     {
       "name": "WeldingMans Enchanting Table Variants PBR",
